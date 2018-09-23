@@ -1,0 +1,43 @@
+<resources>
+
+    <string name="app_name">SWUPlant</string>
+    <string name="splash_top_text">遇见.西大植物</string>
+    <string name="splash_bottom_text_top">西南大学校园景观植物分布地图</string>
+    <string name="splash_bottom_text_bottom">西南大学版权所有©</string>
+
+    <string name="login_phone">请输入手机号</string>
+    <string name="login_verification_code">请输入验证码</string>
+    <string name="button_login">登录</string>
+    <string name="login_bottom_text">登录即代表同意《用户协议》</string>
+    <string name="get_verification_code">立即获取</string>
+    
+    <string name="campus_map">校园地图</string>
+    <string name="fuzzy_retrieval">模糊检索</string>
+    <string name="plant_flora">植物图志</string>
+    <string name="favorite">收藏夹</string>
+
+    <string name="angiosperm">被子植物</string>
+    <string name="gymnosperm">裸子植物</string>
+    <string name="fern">蕨类植物</string>
+
+    <string name="query_content">查询名称</string>
+
+
+    <string name="habit">习性</string>
+    <string name="stem">茎</string>
+    <string name="thorn">刺</string>
+    <string name="milk">乳汁</string>
+    <string name="stipule">托叶</string>
+    <string name="leaf_appearance">叶外观</string>
+    <string name="leaf_bearing_form">叶着生形式</string>
+    <string name="petiole">叶柄</string>
+    <string name="vein">叶脉</string>
+    <string name="leaf_margin">叶缘</string>
+    <string name="flower">花(序)</string>
+    <string name="fruit">果实</string>
+    <string name="ok">确定</string>
+
+    <string name="search_hint">请输入关键字</string>
+
+
+</resources>

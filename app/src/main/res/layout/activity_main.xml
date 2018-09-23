@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v4.view.ViewPager>
+
+        <FrameLayout
+            android:id="@+id/fuzzy_retrieval_input_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:visibility="gone"/>
+
+
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#000">
+
+        <TextView
+            android:id="@+id/campus_map"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="@string/campus_map"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:paddingTop="20dp"
+            android:paddingLeft="3dp"
+            android:paddingBottom="20dp"
+            android:paddingRight="3dp"
+            android:textColor="@android:color/white"
+            android:drawableTop="@drawable/map"/>
+
+        <TextView
+            android:id="@+id/fuzzy_retrieval"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="@string/fuzzy_retrieval"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:paddingTop="20dp"
+            android:paddingLeft="3dp"
+            android:paddingBottom="20dp"
+            android:paddingRight="3dp"
+            android:textColor="@android:color/white"
+            android:drawableTop="@drawable/search"/>
+
+        <TextView
+            android:id="@+id/plant_flora"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="@string/plant_flora"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:paddingTop="20dp"
+            android:paddingLeft="3dp"
+            android:paddingBottom="20dp"
+            android:paddingRight="3dp"
+            android:textColor="@android:color/white"
+            android:drawableTop="@drawable/plant"/>
+
+        <TextView
+            android:id="@+id/favorite"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="@string/favorite"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:paddingTop="20dp"
+            android:paddingLeft="3dp"
+            android:paddingBottom="20dp"
+            android:paddingRight="3dp"
+            android:textColor="@android:color/white"
+            android:drawableTop="@drawable/favorites"/>
+
+    </LinearLayout>
+
+</LinearLayout>

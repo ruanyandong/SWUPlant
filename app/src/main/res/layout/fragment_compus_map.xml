@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/bmapView"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:clickable="true" />
+
+    <com.example.ai.swuplant.customcomponent.ClearEditText
+        android:id="@+id/map_search_edit"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:paddingLeft="8dp"
+        android:background="#9DDE76"
+        android:drawableLeft="@drawable/search"
+        android:hint="@string/search_hint"
+        android:drawablePadding="3dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:maxLines="1"
+        android:textSize="15dp" />
+
+
+</FrameLayout>
