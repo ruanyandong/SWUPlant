@@ -58,6 +58,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".activity.PlantDetailActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".activity.PointInfoActivity"
+            android:screenOrientation="portrait"/>
 
         <service android:name="com.baidu.location.f"
             android:enabled="true"

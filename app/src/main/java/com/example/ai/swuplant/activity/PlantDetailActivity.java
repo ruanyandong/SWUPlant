@@ -12,6 +12,7 @@ import static com.example.ai.swuplant.activity.SplashActivity.plantModelList;
 public class PlantDetailActivity extends BaseActivity {
 
     private ImageView plantImageView;
+    private ImageView imgHeart;
     private TextView plantCnNameTv;
     private TextView plantEnNameTv;
     private TextView plantPropertyTv;
@@ -63,6 +64,7 @@ public class PlantDetailActivity extends BaseActivity {
     protected void initView() {
 
         plantImageView = findViewById(R.id.plant_detail_image);
+        imgHeart = findViewById(R.id.plant_detail_heart);
         plantCnNameTv = findViewById(R.id.plant_detail_CNname);
         plantEnNameTv = findViewById(R.id.plant_detail_ENname);
         plantPropertyTv = findViewById(R.id.plant_detail_property);

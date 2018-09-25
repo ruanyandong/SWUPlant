@@ -7,10 +7,10 @@ import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-
 import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.base.BaseActivity;
 import com.example.ai.swuplant.entity.PlantModel;
+import com.example.ai.swuplant.entity.PointInfo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +28,10 @@ public class SplashActivity extends BaseActivity {
     public static List<String> plantDistributionList = new ArrayList<>();
     public static List<Integer> plantImageIdList = new ArrayList<>();
     public static List<PlantModel> plantModelList = new ArrayList<>();
+
+
+    public static List<PointInfo> pointInfoList = new ArrayList<>();
+    public static List<List<String>> pointList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -112,6 +116,119 @@ public class SplashActivity extends BaseActivity {
         }
 
 
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointOnePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointTwoPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointThreePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointFourPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointFivePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointSixPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointSevenPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointEightPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointNinePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointTenPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointElevenPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointTwelvePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointThirteenPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointFourteenPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointFifteenPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointSixteenPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointSeventeenPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointEighteenPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointNineteenPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointTwentyPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointTwentyonePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointTwentytwoPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointTwentythreePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointTwentyfourPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointTwentyfivePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointTwentysixPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointTwentysevenPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointTwentyeightPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointTwentyninePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointThirtyPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointThirtyonePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointThirtytwoPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointThirtythreePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointThirtyfourPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointThirtysixPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointThirtysevenPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointThirtyeightPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointThirtyninePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointFortyPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointFortyonePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointFortytwoPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointFortythreePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointFortyfourPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointFortyfivePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointFortysixPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointFortysevenPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointFortyeightPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointFortyninePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointFiftyPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointFiftyonePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointFiftytwoPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointFiftythreePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointFiftyfourPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointFiftyfivePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointFiftysixPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointFiftysevenPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointFiftyeightPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointFiftyninePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointSixtyPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointSixtyonePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointSixtytwoPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointSixtythreePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointSixtyfourPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointSixtyfivePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointSixtysixPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointSixtysevenPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointSixtyeightPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointSixtyninePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointSeventyPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointEightyPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointEightyonePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointEightytwoPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointEightythreePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointEightyfourPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointEightyfivePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointEightysixPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointEightysevenPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointEightyeightPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointEightyninePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointNinetyPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointNinetyonePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointNinetytwoPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointNinetythreePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointNinetyfourPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointNinetyfivePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointNinetysixPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointNinetysevenPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointNinetyeightPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointNinetyninePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointOnehundredPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointOnehundredandonePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointOnehundredandtwoPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointOnehundredandthreePlant)));
+
+
+        for (int i = 0; i < pointList.size(); i++) {
+            List<String> stringList = pointList.get(i);
+
+            double latitude = Double.valueOf(stringList.get(0));
+            double longitude = Double.valueOf(stringList.get(1));
+            List<String> nameList = new ArrayList<>();
+            for (int j=2;j<stringList.size();j++){
+                nameList.add(stringList.get(j));
+            }
+            int pointNumber;
+            if (i < 34){
+               pointNumber = i+1;
+            }else {
+                pointNumber = i+2;
+            }
+            PointInfo pointInfo= new PointInfo(pointNumber,latitude,longitude,nameList);
+            pointInfoList.add(pointInfo);
+        }
 
     }
 

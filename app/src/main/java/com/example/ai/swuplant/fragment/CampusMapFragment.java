@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -15,7 +16,9 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
@@ -25,22 +28,29 @@ import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.InfoWindow;
+import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Marker;
+import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.activity.PlantDetailActivity;
+import com.example.ai.swuplant.activity.PointInfoActivity;
 import com.example.ai.swuplant.base.BaseFragment;
 import com.example.ai.swuplant.customcomponent.ClearEditText;
+import com.example.ai.swuplant.entity.PointInfo;
 import com.example.ai.swuplant.utils.Constant;
 import com.example.ai.swuplant.utils.IntentUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import static com.example.ai.swuplant.activity.SplashActivity.plantModelList;
+import static com.example.ai.swuplant.activity.SplashActivity.pointInfoList;
 
 public class CampusMapFragment extends BaseFragment {
 
@@ -62,9 +72,6 @@ public class CampusMapFragment extends BaseFragment {
     //自定义定位图标
     private BitmapDescriptor mIconLocation;
 
-
-
-
     /**
      *模式变量
      */
@@ -74,11 +81,6 @@ public class CampusMapFragment extends BaseFragment {
      *覆盖物图标
      */
     private BitmapDescriptor mMarker;
-
-    /**
-     *覆盖物布局
-     */
-    private RelativeLayout mMarkerLayout;
 
     /**
      * infoWindow
@@ -107,15 +109,110 @@ public class CampusMapFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        view=inflater.inflate(R.layout.fragment_compus_map, container, false);
 
+        view=inflater.inflate(R.layout.fragment_compus_map, container, false);
         initView(view);
         initEvent();
 
         checkPermission();
         checkGPS();
 
+        addOverlays(pointInfoList);
+
+        setOnMarkerListener();
+        setOnMapClickListener();
+
         return view;
+    }
+
+    private void addOverlays(List<PointInfo> pointList){
+        /**
+         * 清除图层
+         */
+        baiduMap.clear();
+
+        LatLng latLng=null;
+        Marker marker=null;
+        OverlayOptions options;
+
+        for (PointInfo info:pointList) {
+
+            //经纬度
+            latLng=new LatLng(info.getLatitude(),info.getLongitude());
+            //图标
+            options=new MarkerOptions().position(latLng).icon(mMarker).zIndex(5);
+            marker=(Marker)baiduMap.addOverlay(options);
+            Bundle bundle=new Bundle();
+            bundle.putSerializable(Constant.PLANT_NAME,info);
+
+            marker.setExtraInfo(bundle);
+        }
+        //把地图移动到到最后一个覆盖物的位置
+        MapStatusUpdate update=MapStatusUpdateFactory.newLatLng(latLng);
+        baiduMap.setMapStatus(update);
+    }
+
+    /**
+     * 点击地图的时候，隐藏具体信息、隐藏infoWindows
+     */
+    private void setOnMapClickListener() {
+        baiduMap.setOnMapClickListener(new BaiduMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+
+                /**
+                 * 点击地图，隐藏infoWindows
+                 */
+                baiduMap.hideInfoWindow();
+
+            }
+
+            @Override
+            public boolean onMapPoiClick(MapPoi mapPoi) {
+                return false;
+            }
+        });
+    }
+
+    /**
+     * 点击Marker显示marker具体信息和infoWindow
+     */
+    private void setOnMarkerListener() {
+        baiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+
+                Bundle bundle=marker.getExtraInfo();
+                PointInfo infoBean=(PointInfo) bundle.getSerializable(Constant.PLANT_NAME);
+
+                /**
+                 * 设置infoWindows
+                 */
+
+                TextView tv=new TextView(getActivity());
+                tv.setBackground(getResources().getDrawable(R.drawable.popup));
+
+                tv.setPadding(30,20,30,50);
+                tv.setText(infoBean.getPointNumber()+"号点");
+
+                LatLng latLng=marker.getPosition();
+
+
+                infoWindow=new InfoWindow(tv,latLng,-47);
+
+
+                baiduMap.showInfoWindow(infoWindow);
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        IntentUtils.showActivity(getActivity(), PointInfoActivity.class,bundle);
+                    }
+                },3000);
+
+                return true;
+            }
+        });
     }
 
 
@@ -209,6 +306,7 @@ public class CampusMapFragment extends BaseFragment {
         mMapView=view.findViewById(R.id.bmapView);
         initMapView();
         mSearchView=view.findViewById(R.id.map_search_edit);
+        mMarker = BitmapDescriptorFactory.fromResource(R.drawable.point);
     }
 
     @Override
@@ -283,6 +381,7 @@ public class CampusMapFragment extends BaseFragment {
     public void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
+
 
     }
     @Override
