@@ -208,7 +208,7 @@ public class CampusMapFragment extends BaseFragment {
                     public void run() {
                         IntentUtils.showActivity(getActivity(), PointInfoActivity.class,bundle);
                     }
-                },3000);
+                },1000);
 
                 return true;
             }
@@ -341,8 +341,9 @@ public class CampusMapFragment extends BaseFragment {
                             @Override
                             public void run() {
                                 IntentUtils.showActivity(getActivity(), PlantDetailActivity.class,bundle);
+                                mSearchView.setText("");
                             }
-                        },3000);
+                        },1000);
 
                         break;
                     }

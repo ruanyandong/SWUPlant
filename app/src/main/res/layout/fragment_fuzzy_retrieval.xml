@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,46 +8,67 @@
     android:gravity="center"
     android:background="@android:color/white">
 
-    <TextView
-        android:id="@+id/angiosperm"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/angiosperm"
-        android:textSize="18sp"
-        android:layout_margin="10dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:paddingRight="100dp"
-        android:paddingLeft="100dp"
-        android:drawablePadding="20dp"
-        android:drawableTop="@drawable/angiosperms"
-        />
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="30dp"
+        android:layout_margin="10dp">
+        <TextView
+            android:id="@+id/angiosperm"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/angiosperm"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:drawablePadding="20dp"
+            android:drawableTop="@drawable/angiosperms"
+            />
 
-    <TextView
-        android:id="@+id/gymnosperm"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/gymnosperm"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/gymnosperm"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:drawablePadding="20dp"
+            android:drawableTop="@drawable/gymnosperms"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/gymnosperm"
-        android:textSize="18sp"
+        android:orientation="horizontal"
+        android:padding="30dp"
         android:layout_margin="10dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:paddingRight="100dp"
-        android:paddingLeft="100dp"
-        android:drawablePadding="20dp"
-        android:drawableTop="@drawable/gymnosperms"/>
-    <TextView
-        android:id="@+id/fern"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/fern"
-        android:textSize="18sp"
-        android:layout_margin="10dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:paddingRight="100dp"
-        android:paddingLeft="100dp"
-        android:drawablePadding="20dp"
-        android:drawableTop="@drawable/fern"/>
+        android:gravity="center">
+        <TextView
+            android:id="@+id/fern"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/fern"
+            android:textSize="18sp"
+            android:drawablePadding="20dp"
+            android:drawableTop="@drawable/fern"/>
+        <TextView
+            android:id="@+id/bamboo"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/bamboo"
+            android:textSize="18sp"
+            android:drawablePadding="20dp"
+            android:drawableTop="@drawable/fern"/>
+
+    </LinearLayout>
+
+
 
 </LinearLayout>

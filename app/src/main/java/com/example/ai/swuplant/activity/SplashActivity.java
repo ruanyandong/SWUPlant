@@ -33,6 +33,10 @@ public class SplashActivity extends BaseActivity {
     public static List<PointInfo> pointInfoList = new ArrayList<>();
     public static List<List<String>> pointList = new ArrayList<>();
 
+    public static List<String> bambooList = new ArrayList<>();
+    public static List<String> fernList = new ArrayList<>();
+    public static List<String> gymnospermList = new ArrayList<>();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +51,6 @@ public class SplashActivity extends BaseActivity {
 
         initData();
 
-        initEvent();
 
 
     }
@@ -60,10 +63,6 @@ public class SplashActivity extends BaseActivity {
         mSplashImage.startAnimation(mAnimation);
     }
 
-    @Override
-    protected void initEvent() {
-
-    }
 
     private void setAnimationListener(){
 
@@ -185,6 +184,15 @@ public class SplashActivity extends BaseActivity {
         pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointSixtyeightPlant)));
         pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointSixtyninePlant)));
         pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointSeventyPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointSeventyonePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointSeventytwoPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointSeventythreePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointSeventyfourPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointSeventyfivePlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointSeventysixPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointSeventysevenPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointSeventyeightPlant)));
+        pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointSeventyninePlant)));
         pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointEightyPlant)));
         pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointEightyonePlant)));
         pointList.add(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pointEightytwoPlant)));
@@ -217,18 +225,20 @@ public class SplashActivity extends BaseActivity {
             double latitude = Double.valueOf(stringList.get(0));
             double longitude = Double.valueOf(stringList.get(1));
             List<String> nameList = new ArrayList<>();
+
             for (int j=2;j<stringList.size();j++){
                 nameList.add(stringList.get(j));
             }
-            int pointNumber;
-            if (i < 34){
-               pointNumber = i+1;
-            }else {
-                pointNumber = i+2;
-            }
+            int pointNumber = i;
+
             PointInfo pointInfo= new PointInfo(pointNumber,latitude,longitude,nameList);
             pointInfoList.add(pointInfo);
         }
+
+        bambooList = Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.bambooList));
+        fernList = Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.fernList));
+        gymnospermList = Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.gymnospermList));
+
 
     }
 

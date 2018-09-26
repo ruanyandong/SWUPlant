@@ -53,28 +53,22 @@ public class FuzzyRetrievalFragment extends BaseFragment {
 
         mAngiosperm.setOnClickListener(v->{
 
-            showAngiospermActivity();
+
 
         });
 
         mGymnosperm.setOnClickListener(v->{
 
-            showAngiospermActivity();
+
 
         });
 
         mFern.setOnClickListener(v->{
 
-            showAngiospermActivity();
+
 
         });
     }
-
-    private void showAngiospermActivity() {
-        Intent intent = new Intent(getActivity(), FuzzySearchActivity.class);
-        getActivity().startActivity(intent);
-    }
-
 
 
 

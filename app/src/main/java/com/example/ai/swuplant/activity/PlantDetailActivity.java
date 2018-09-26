@@ -1,12 +1,22 @@
 package com.example.ai.swuplant.activity;
 
+import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.base.BaseActivity;
+import com.example.ai.swuplant.database.MyFavoriteDatabaseHelper;
 import com.example.ai.swuplant.utils.Constant;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.example.ai.swuplant.activity.SplashActivity.plantModelList;
 
 public class PlantDetailActivity extends BaseActivity {
@@ -19,16 +29,82 @@ public class PlantDetailActivity extends BaseActivity {
     private TextView plantDescriptionTv;
     private TextView plantDistributionTv;
 
+    private MyFavoriteDatabaseHelper databaseHelper;
 
+    private List<String> plantNameList = new ArrayList<>();
+
+    private int imageId;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        databaseHelper = new MyFavoriteDatabaseHelper(getApplicationContext());
+
+        query();
 
         initView();
 
         initData();
 
+        initEvent();
 
+    }
+
+
+    private void query(){
+        Cursor cursor = databaseHelper.getAllData();
+        plantNameList.clear();
+        if(cursor!=null){
+            while(cursor.moveToNext()){
+                String plantName=cursor.getString(cursor.getColumnIndex("plantName"));
+                plantNameList.add(plantName);
+            }
+            cursor.close();
+        }
+    }
+
+    @Override
+    protected void initEvent() {
+
+        Drawable.ConstantState hollowHeart = getResources().getDrawable(R.drawable.hollow_heart).getConstantState();
+        Drawable.ConstantState solidHeart = getResources().getDrawable(R.drawable.solid_heart).getConstantState();
+        imgHeart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                query();
+                String plantName = plantCnNameTv.getText().toString();
+                boolean ishave = isContains(plantName);
+
+                Drawable.ConstantState drawable = imgHeart.getDrawable().getConstantState();
+
+                if (drawable.equals(hollowHeart)){
+                    if (!ishave){
+                        databaseHelper.insert(imageId,plantName);
+                        imgHeart.setImageResource(R.drawable.solid_heart);
+                        Toast.makeText(PlantDetailActivity.this,"收藏成功",Toast.LENGTH_SHORT).show();
+                    }else {
+                        imgHeart.setImageResource(R.drawable.solid_heart);
+                    }
+                }else if (drawable.equals(solidHeart)){
+                    if (ishave){
+                        databaseHelper.deleteData(imageId);
+                        imgHeart.setImageResource(R.drawable.hollow_heart);
+                        Toast.makeText(PlantDetailActivity.this,"取消收藏",Toast.LENGTH_SHORT).show();
+                    }else {
+                        imgHeart.setImageResource(R.drawable.hollow_heart);
+                    }
+                }
+
+            }
+        });
+    }
+
+    private boolean isContains(String plantName){
+        for (int i = 0; i < plantNameList.size(); i++) {
+            if (plantName.equals(plantNameList.get(i))){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -49,8 +125,13 @@ public class PlantDetailActivity extends BaseActivity {
                plantPropertyTv.setText(plantModelList.get(i).getPlantProperty());
                plantDescriptionTv.setText(plantModelList.get(i).getPlantDescription());
                plantDistributionTv.setText(plantModelList.get(i).getPlantDistribution());
+               imageId = plantModelList.get(i).getPlantImageId();
                break;
            }
+        }
+
+        if (isContains(plantName)){
+            imgHeart.setImageResource(R.drawable.solid_heart);
         }
 
     }
@@ -73,5 +154,10 @@ public class PlantDetailActivity extends BaseActivity {
 
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        databaseHelper.close();
+        databaseHelper = null;
+    }
 }
