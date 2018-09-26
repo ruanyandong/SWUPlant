@@ -1,16 +1,17 @@
 package com.example.ai.swuplant.fragment;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.example.ai.swuplant.R;
+import com.example.ai.swuplant.activity.BambooActivity;
+import com.example.ai.swuplant.activity.FernActivity;
 import com.example.ai.swuplant.activity.FuzzySearchActivity;
+import com.example.ai.swuplant.activity.GymnospermActivity;
 import com.example.ai.swuplant.base.BaseFragment;
+import com.example.ai.swuplant.utils.IntentUtils;
 
 public class FuzzyRetrievalFragment extends BaseFragment {
 
@@ -21,6 +22,7 @@ public class FuzzyRetrievalFragment extends BaseFragment {
     // 蕨类植物
     private TextView mFern;
 
+    private TextView mBamboo;
 
 
     @Nullable
@@ -46,28 +48,31 @@ public class FuzzyRetrievalFragment extends BaseFragment {
         mAngiosperm = view.findViewById(R.id.angiosperm);
         mGymnosperm = view.findViewById(R.id.gymnosperm);
         mFern = view.findViewById(R.id.fern);
+        mBamboo = view.findViewById(R.id.bamboo);
     }
 
     @Override
     protected void initEvent() {
 
         mAngiosperm.setOnClickListener(v->{
-
-
+            IntentUtils.showActivity(getActivity(), FuzzySearchActivity.class);
 
         });
 
         mGymnosperm.setOnClickListener(v->{
-
-
+            IntentUtils.showActivity(getActivity(), GymnospermActivity.class);
 
         });
 
         mFern.setOnClickListener(v->{
-
-
+            IntentUtils.showActivity(getActivity(), FernActivity.class);
 
         });
+
+        mBamboo.setOnClickListener(v->{
+            IntentUtils.showActivity(getActivity(), BambooActivity.class);
+        });
+
     }
 
 

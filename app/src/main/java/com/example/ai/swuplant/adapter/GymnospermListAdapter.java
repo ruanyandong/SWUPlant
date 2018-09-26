@@ -7,11 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.entity.PlantModel;
+
 import java.util.List;
 
-public class MyFavoriteListAdapter extends RecyclerView.Adapter<MyFavoriteListAdapter.ViewHolder>{
+public class GymnospermListAdapter extends RecyclerView.Adapter<GymnospermListAdapter.ViewHolder>{
 
 
     private List<PlantModel> plantModels;
@@ -19,7 +21,7 @@ public class MyFavoriteListAdapter extends RecyclerView.Adapter<MyFavoriteListAd
     private LayoutInflater inflater;
     private OnItemClickListener onItemClickListener;
 
-    public MyFavoriteListAdapter(Context context, List<PlantModel> list){
+    public GymnospermListAdapter(Context context, List<PlantModel> list){
         this.context = context;
         this.plantModels = list;
         inflater = LayoutInflater.from(this.context);
@@ -31,15 +33,15 @@ public class MyFavoriteListAdapter extends RecyclerView.Adapter<MyFavoriteListAd
 
         public ViewHolder(View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.fern_image);
-            textView = itemView.findViewById(R.id.fern_name);
+            imageView = itemView.findViewById(R.id.gymnosperm_image);
+            textView = itemView.findViewById(R.id.gymnosperm_name);
         }
 
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.my_favorite_list_item,parent,false);
+        View view = inflater.inflate(R.layout.gymnosperm_list_item,parent,false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }

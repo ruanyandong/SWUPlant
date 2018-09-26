@@ -60,6 +60,12 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".activity.PointInfoActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".activity.BambooActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.FernActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.GymnospermActivity"
+            android:screenOrientation="portrait"/>
 
         <service android:name="com.baidu.location.f"
             android:enabled="true"

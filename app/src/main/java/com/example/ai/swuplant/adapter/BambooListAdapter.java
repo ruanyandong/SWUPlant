@@ -7,11 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.entity.PlantModel;
+
 import java.util.List;
 
-public class MyFavoriteListAdapter extends RecyclerView.Adapter<MyFavoriteListAdapter.ViewHolder>{
+public class BambooListAdapter extends RecyclerView.Adapter<BambooListAdapter.ViewHolder>{
 
 
     private List<PlantModel> plantModels;
@@ -19,7 +21,7 @@ public class MyFavoriteListAdapter extends RecyclerView.Adapter<MyFavoriteListAd
     private LayoutInflater inflater;
     private OnItemClickListener onItemClickListener;
 
-    public MyFavoriteListAdapter(Context context, List<PlantModel> list){
+    public BambooListAdapter(Context context, List<PlantModel> list){
         this.context = context;
         this.plantModels = list;
         inflater = LayoutInflater.from(this.context);
@@ -39,7 +41,7 @@ public class MyFavoriteListAdapter extends RecyclerView.Adapter<MyFavoriteListAd
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.my_favorite_list_item,parent,false);
+        View view = inflater.inflate(R.layout.bamboo_list_item,parent,false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
