@@ -25,14 +25,14 @@ public class MyFavoriteListAdapter extends RecyclerView.Adapter<MyFavoriteListAd
         inflater = LayoutInflater.from(this.context);
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    static class ViewHolder extends RecyclerView.ViewHolder{
         ImageView imageView;
         TextView textView;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.fern_image);
-            textView = itemView.findViewById(R.id.fern_name);
+            imageView = itemView.findViewById(R.id.angiosperm_image);
+            textView = itemView.findViewById(R.id.angiosperm_name);
         }
 
     }

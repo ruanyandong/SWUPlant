@@ -41,5 +41,6 @@
     <string name="search_hint">请输入关键字</string>
 
     <string name="my_favorite">我的收藏</string>
+    <string name="angiosperm_fuzzy_search_result">被子植物模糊检索结果</string>
 
 </resources>

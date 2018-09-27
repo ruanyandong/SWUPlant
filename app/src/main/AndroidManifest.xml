@@ -66,6 +66,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".activity.GymnospermActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".activity.FuzzySearchAngiospermResultActivity"
+            android:screenOrientation="portrait"/>
 
         <service android:name="com.baidu.location.f"
             android:enabled="true"

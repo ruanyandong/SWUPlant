@@ -13,7 +13,7 @@
         android:orientation="horizontal"
         android:gravity="center_horizontal"
         android:layout_marginTop="10dp">
-        <Button
+        <TextView
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:text="@string/habit"
@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_horizontal">
-        <Button
+        <TextView
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:text="@string/stem"
@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_horizontal">
-        <Button
+        <TextView
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:text="@string/thorn"
@@ -87,7 +87,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_horizontal">
-        <Button
+        <TextView
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:text="@string/milk"
@@ -111,7 +111,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_horizontal">
-        <Button
+        <TextView
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:text="@string/stipule"
@@ -135,7 +135,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_horizontal">
-        <Button
+        <TextView
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:text="@string/leaf_appearance"
@@ -159,7 +159,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_horizontal">
-        <Button
+        <TextView
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:text="@string/leaf_bearing_form"
@@ -183,7 +183,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_horizontal">
-        <Button
+        <TextView
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:text="@string/petiole"
@@ -209,7 +209,7 @@
         android:orientation="horizontal"
         android:gravity="center_horizontal">
 
-        <Button
+        <TextView
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:text="@string/vein"
@@ -234,7 +234,7 @@
         android:orientation="horizontal"
         android:gravity="center_horizontal">
 
-        <Button
+        <TextView
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:text="@string/leaf_margin"
@@ -259,7 +259,7 @@
         android:orientation="horizontal"
         android:gravity="center_horizontal">
 
-        <Button
+        <TextView
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:text="@string/flower"
@@ -284,7 +284,7 @@
         android:orientation="horizontal"
         android:gravity="center_horizontal">
 
-        <Button
+        <TextView
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:text="@string/fruit"
@@ -322,13 +322,5 @@
             />
 
     </LinearLayout>
-
-
-
-
-
-
-
-
 
 </LinearLayout>

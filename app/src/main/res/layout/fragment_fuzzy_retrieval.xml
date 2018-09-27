@@ -65,7 +65,7 @@
             android:text="@string/bamboo"
             android:textSize="18sp"
             android:drawablePadding="20dp"
-            android:drawableTop="@drawable/fern"/>
+            android:drawableTop="@drawable/bamboo"/>
 
     </LinearLayout>
 

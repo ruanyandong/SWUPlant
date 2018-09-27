@@ -5,13 +5,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
-        android:id="@+id/fernText"
+        android:id="@+id/angiospermText"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/gymnospermList"
+        app:layout_constraintBottom_toTopOf="@+id/angiospermList"
         android:text="@string/fern"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -21,12 +21,12 @@
         android:padding="10dp"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/gymnospermList"
+        android:id="@+id/angiospermList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fernText"
+        app:layout_constraintTop_toBottomOf="@id/angiospermText"
         app:layout_constraintLeft_toLeftOf="parent"/>
 
 

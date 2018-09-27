@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,9 +26,10 @@ public class FavoriteFragment extends BaseFragment {
     private RecyclerView recyclerView;
     private MyFavoriteListAdapter mAdapter;
 
-    private List<PlantModel> plantModels = new ArrayList<>();
+    private List<PlantModel> plantDatas = new ArrayList<>();
 
     private MyFavoriteDatabaseHelper databaseHelper;
+
     private List<String> plantNameList = new ArrayList<>();
 
     private void query(){
@@ -38,21 +40,26 @@ public class FavoriteFragment extends BaseFragment {
                 String plantName=cursor.getString(cursor.getColumnIndex("plantName"));
                 plantNameList.add(plantName);
             }
+            Log.d("TAG", "query: plantNameList"+plantNameList.size());
+
             cursor.close();
         }
 
-        plantModels.clear();
+        plantDatas.clear();
         for (int i = 0; i < plantNameList.size(); i++) {
 
             for (int j = 0; j < plantModelList.size(); j++) {
                 if (plantNameList.get(i).equals(plantModelList.get(j).getPlantCNName())){
-                    plantModels.add(plantModelList.get(j));
+                    plantDatas.add(plantModelList.get(j));
+                    break;
                 }
             }
-
         }
+        Log.d("TAG", "query: "+plantDatas.size());
+
 
     }
+
 
     @Nullable
     @Override
@@ -63,6 +70,7 @@ public class FavoriteFragment extends BaseFragment {
                 inflate(R.layout.fragment_favorite,
                         container, false);
         databaseHelper = new MyFavoriteDatabaseHelper(getActivity().getApplicationContext());
+        Log.d("TAG", "onCreateView: ");
         query();
 
         initView(view);
@@ -75,15 +83,23 @@ public class FavoriteFragment extends BaseFragment {
         if (databaseHelper == null){
             databaseHelper = new MyFavoriteDatabaseHelper(getActivity().getApplicationContext());
         }
+        Log.d("TAG", "onResume: ");
         query();
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        databaseHelper.close();
+        databaseHelper = null;
     }
 
     @Override
     protected void initView(View view) {
         recyclerView = view.findViewById(R.id.myFavoriteList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mAdapter = new MyFavoriteListAdapter(getActivity(),plantModels);
+        mAdapter = new MyFavoriteListAdapter(getActivity(),plantDatas);
         recyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new MyFavoriteListAdapter.OnItemClickListener() {
             @Override
@@ -95,6 +111,5 @@ public class FavoriteFragment extends BaseFragment {
         });
 
     }
-
 
 }

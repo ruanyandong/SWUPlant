@@ -32,7 +32,7 @@ public class GymnospermActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        recyclerView = findViewById(R.id.gymnospermList);
+        recyclerView = findViewById(R.id.angiospermList);
         mAdapter = new FernListAdapter(GymnospermActivity.this,plantModels);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAdapter.setOnItemClickListener(new FernListAdapter.OnItemClickListener() {
@@ -53,6 +53,7 @@ public class GymnospermActivity extends BaseActivity {
             for (int j = 0; j < plantModelList.size(); j++) {
                 if (gymnospermList.get(i).equals(plantModelList.get(j).getPlantCNName())){
                     plantModels.add(plantModelList.get(j));
+                    break;
                 }
             }
         }

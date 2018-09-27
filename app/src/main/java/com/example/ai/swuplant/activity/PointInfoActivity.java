@@ -43,6 +43,7 @@ public class PointInfoActivity extends BaseActivity {
                 for (int j = 0; j < plantModelList.size(); j++) {
                     if (plantNameList.get(i).equals(plantModelList.get(j).getPlantCNName())){
                         plantModels.add(plantModelList.get(j));
+                        break;
                     }
                 }
 

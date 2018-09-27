@@ -53,6 +53,7 @@ public class BambooActivity extends BaseActivity {
             for (int j = 0; j < plantModelList.size(); j++) {
                 if (bambooList.get(i).equals(plantModelList.get(j).getPlantCNName())){
                     plantModels.add(plantModelList.get(j));
+                    break;
                 }
             }
         }

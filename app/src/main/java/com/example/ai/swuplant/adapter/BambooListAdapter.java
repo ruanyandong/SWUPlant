@@ -33,8 +33,8 @@ public class BambooListAdapter extends RecyclerView.Adapter<BambooListAdapter.Vi
 
         public ViewHolder(View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.fern_image);
-            textView = itemView.findViewById(R.id.fern_name);
+            imageView = itemView.findViewById(R.id.angiosperm_image);
+            textView = itemView.findViewById(R.id.angiosperm_name);
         }
 
     }

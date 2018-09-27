@@ -13,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -118,6 +119,7 @@ public class CampusMapFragment extends BaseFragment {
         checkGPS();
 
         addOverlays(pointInfoList);
+        Log.d(TAG, "onCreateView: pointInfoList"+pointInfoList.size());
 
         setOnMarkerListener();
         setOnMapClickListener();
@@ -193,7 +195,11 @@ public class CampusMapFragment extends BaseFragment {
                 tv.setBackground(getResources().getDrawable(R.drawable.popup));
 
                 tv.setPadding(30,20,30,50);
-                tv.setText(infoBean.getPointNumber()+"号点");
+                int pointNumber = infoBean.getPointNumber();
+                if (pointNumber > 102){
+                    pointNumber = pointNumber/2;
+                }
+                tv.setText(pointNumber+"号点");
 
                 LatLng latLng=marker.getPosition();
 
