@@ -21,10 +21,10 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         if (!isTaskRoot()){
-
             finish();
             return;
         }
+
 
         initView();
     }

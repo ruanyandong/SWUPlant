@@ -7,11 +7,11 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.base.BaseActivity;
 import com.example.ai.swuplant.database.MyFavoriteDatabaseHelper;
 import com.example.ai.swuplant.utils.Constant;
+import com.example.ai.swuplant.utils.ToastUtils;
 import java.util.ArrayList;
 import java.util.List;
 import static com.example.ai.swuplant.base.BaseApplication.plantModelList;
@@ -77,7 +77,7 @@ public class PlantDetailActivity extends BaseActivity {
                     if (!ishave){
                         databaseHelper.insert(imageId,plantName);
                         imgHeart.setImageResource(R.drawable.solid_heart);
-                        Toast.makeText(PlantDetailActivity.this,"收藏成功",Toast.LENGTH_SHORT).show();
+                        ToastUtils.showToast(getApplicationContext(),"收藏成功");
                     }else {
                         imgHeart.setImageResource(R.drawable.solid_heart);
                     }
@@ -85,7 +85,7 @@ public class PlantDetailActivity extends BaseActivity {
                     if (ishave){
                         databaseHelper.deleteData(imageId);
                         imgHeart.setImageResource(R.drawable.hollow_heart);
-                        Toast.makeText(PlantDetailActivity.this,"取消收藏",Toast.LENGTH_SHORT).show();
+                        ToastUtils.showToast(getApplicationContext(),"取消收藏");
                     }else {
                         imgHeart.setImageResource(R.drawable.hollow_heart);
                     }
@@ -157,4 +157,5 @@ public class PlantDetailActivity extends BaseActivity {
         databaseHelper.close();
         databaseHelper = null;
     }
+
 }

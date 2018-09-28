@@ -22,7 +22,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
 
     private ViewPager mViewPager;
-
     private TextView mCampusMap;
     private TextView mFuzzyRetrieval;
     private TextView mFlora;

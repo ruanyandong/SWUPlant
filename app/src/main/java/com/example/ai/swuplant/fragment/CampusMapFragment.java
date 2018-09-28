@@ -45,6 +45,8 @@ import com.example.ai.swuplant.customcomponent.ClearEditText;
 import com.example.ai.swuplant.entity.PointInfo;
 import com.example.ai.swuplant.utils.Constant;
 import com.example.ai.swuplant.utils.IntentUtils;
+import com.example.ai.swuplant.utils.ToastUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import static com.example.ai.swuplant.base.BaseApplication.plantModelList;
@@ -116,7 +118,6 @@ public class CampusMapFragment extends BaseFragment {
         checkGPS();
 
         addOverlays(pointInfoList);
-        Log.d(TAG, "onCreateView: pointInfoList"+pointInfoList.size());
 
         setOnMarkerListener();
         setOnMapClickListener();
@@ -269,9 +270,7 @@ public class CampusMapFragment extends BaseFragment {
 
         if(!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
             // 未打开位置开关，可能导致定位失败或定位不准，提示用户或做相应处理
-            Toast.makeText(getActivity(),
-                    "未打开GPS开关，可能导致定位失败或定位不准",
-                    Toast.LENGTH_LONG).show();
+            ToastUtils.showToast(getActivity().getApplicationContext(),"未打开GPS开关，可能导致定位失败或定位不准");
         }
     }
 
@@ -353,7 +352,7 @@ public class CampusMapFragment extends BaseFragment {
                 }
 
                 if (!isExit){
-                    Toast.makeText(getActivity(),"搜索的植物不存在",Toast.LENGTH_SHORT).show();
+                    ToastUtils.showToast(getActivity().getApplicationContext(),"搜索的植物不存在");
                 }
 
             }
@@ -412,19 +411,15 @@ public class CampusMapFragment extends BaseFragment {
                 if (grantResults.length>0){
                     for (int result:grantResults) {
                         if (result != PackageManager.PERMISSION_GRANTED) {
-                            Toast.makeText(getActivity(),
-                                    "必须同意所有权限才能使用此程序",
-                                    Toast.LENGTH_LONG).show();
-//                            finish();
+                            ToastUtils.showToast(getActivity().getApplicationContext(),"必须同意所有权限才能使用此程序");
+
                             return;
                         }
                     }
                     acquireLocation();
                 }else {
-                    Toast.makeText(getActivity(),
-                            "发生未知错误",
-                            Toast.LENGTH_LONG).show();
-//                    finish();
+                    ToastUtils.showToast(getActivity().getApplicationContext(),"发生未知错误");
+
                 }
                 break;
             default:

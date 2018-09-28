@@ -9,6 +9,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.entity.SortModel;
+import com.example.ai.swuplant.utils.ToastUtils;
+
 import java.util.List;
 
 /**
@@ -52,8 +54,7 @@ public class SortAdapter extends RecyclerView.Adapter<SortAdapter.ViewHolder> {
         holder.tvName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, mData.get(position).getName(), Toast.LENGTH_SHORT).show();
-
+                ToastUtils.showToast(mContext.getApplicationContext(),mData.get(position).getName());
                 if (mOnItemClickListener != null){
                     mOnItemClickListener.onItemClick(holder.tvName, position,mData.get(position).getName());
 

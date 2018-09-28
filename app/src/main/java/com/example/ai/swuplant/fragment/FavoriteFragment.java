@@ -70,7 +70,6 @@ public class FavoriteFragment extends BaseFragment {
                 inflate(R.layout.fragment_favorite,
                         container, false);
         databaseHelper = new MyFavoriteDatabaseHelper(getActivity().getApplicationContext());
-        Log.d("TAG", "onCreateView: ");
         query();
 
         initView(view);
@@ -83,7 +82,7 @@ public class FavoriteFragment extends BaseFragment {
         if (databaseHelper == null){
             databaseHelper = new MyFavoriteDatabaseHelper(getActivity().getApplicationContext());
         }
-        Log.d("TAG", "onResume: ");
+
         query();
         mAdapter.notifyDataSetChanged();
     }
