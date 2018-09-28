@@ -8,16 +8,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.base.BaseActivity;
 import com.example.ai.swuplant.database.MyFavoriteDatabaseHelper;
 import com.example.ai.swuplant.utils.Constant;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.example.ai.swuplant.activity.SplashActivity.plantModelList;
+import static com.example.ai.swuplant.base.BaseApplication.plantModelList;
 
 public class PlantDetailActivity extends BaseActivity {
 

@@ -19,7 +19,7 @@ import com.example.ai.swuplant.utils.Constant;
 import com.example.ai.swuplant.utils.IntentUtils;
 import java.util.ArrayList;
 import java.util.List;
-import static com.example.ai.swuplant.activity.SplashActivity.plantModelList;
+import static com.example.ai.swuplant.base.BaseApplication.plantModelList;
 
 public class FavoriteFragment extends BaseFragment {
 

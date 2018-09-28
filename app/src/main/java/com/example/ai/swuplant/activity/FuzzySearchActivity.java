@@ -5,12 +5,10 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Spinner;
-
 import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.base.BaseActivity;
 import com.example.ai.swuplant.utils.Constant;
 import com.example.ai.swuplant.utils.IntentUtils;
-
 import java.util.ArrayList;
 
 public class FuzzySearchActivity extends BaseActivity {

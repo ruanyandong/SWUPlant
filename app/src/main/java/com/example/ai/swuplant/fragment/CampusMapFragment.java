@@ -17,8 +17,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.baidu.location.BDAbstractLocationListener;
@@ -47,11 +45,10 @@ import com.example.ai.swuplant.customcomponent.ClearEditText;
 import com.example.ai.swuplant.entity.PointInfo;
 import com.example.ai.swuplant.utils.Constant;
 import com.example.ai.swuplant.utils.IntentUtils;
-
 import java.util.ArrayList;
 import java.util.List;
-import static com.example.ai.swuplant.activity.SplashActivity.plantModelList;
-import static com.example.ai.swuplant.activity.SplashActivity.pointInfoList;
+import static com.example.ai.swuplant.base.BaseApplication.plantModelList;
+import static com.example.ai.swuplant.base.BaseApplication.pointInfoList;
 
 public class CampusMapFragment extends BaseFragment {
 

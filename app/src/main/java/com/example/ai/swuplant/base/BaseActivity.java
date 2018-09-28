@@ -34,14 +34,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 
-    protected void showActivity(Context context, Class<?> clazz){
-
-        Intent intent = new Intent(context,clazz);
-
-        context.startActivity(intent);
-
-    }
-
 
     /**
      * 核对是否有权限

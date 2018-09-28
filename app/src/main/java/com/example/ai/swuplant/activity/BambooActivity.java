@@ -14,8 +14,8 @@ import com.example.ai.swuplant.utils.IntentUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import static com.example.ai.swuplant.activity.SplashActivity.plantModelList;
-import static com.example.ai.swuplant.activity.SplashActivity.bambooList;
+import static com.example.ai.swuplant.base.BaseApplication.plantModelList;
+import static com.example.ai.swuplant.base.BaseApplication.bambooList;
 
 public class BambooActivity extends BaseActivity {
 

@@ -11,12 +11,10 @@ import com.example.ai.swuplant.base.BaseActivity;
 import com.example.ai.swuplant.entity.PlantModel;
 import com.example.ai.swuplant.utils.Constant;
 import com.example.ai.swuplant.utils.IntentUtils;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.example.ai.swuplant.activity.SplashActivity.fernList;
-import static com.example.ai.swuplant.activity.SplashActivity.plantModelList;
+import static com.example.ai.swuplant.base.BaseApplication.fernList;
+import static com.example.ai.swuplant.base.BaseApplication.plantModelList;
 
 public class FernActivity extends BaseActivity {
 
