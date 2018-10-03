@@ -8,13 +8,14 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="15dp">
+        android:padding="3dp">
 
         <ImageView
             android:id="@+id/plant_detail_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
             android:src="@drawable/aizongzhu"
+            android:scaleType="fitXY"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
 
@@ -25,42 +26,47 @@
             android:src="@drawable/hollow_heart"
             android:clickable="true"
             android:focusable="true"
-            android:layout_marginRight="20dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            app:layout_constraintTop_toBottomOf="@id/plant_detail_image"
+            app:layout_constraintLeft_toRightOf="@+id/plant_detail_CNname"/>
 
         <TextView
             android:id="@+id/plant_detail_CNname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="矮棕竹"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/plant_detail_image"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginTop="10dp"
-            android:textSize="18sp" />
+            android:textSize="22sp" />
 
         <TextView
             android:id="@+id/plant_detail_ENname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="hello world"
+            android:textColor="@android:color/black"
             app:layout_constraintTop_toBottomOf="@id/plant_detail_CNname"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginTop="10dp"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/plant_detail_property"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="豆科 决明属"
+            android:textColor="@android:color/black"
             app:layout_constraintTop_toBottomOf="@id/plant_detail_ENname"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginTop="10dp"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/plant_detail_description"
@@ -73,18 +79,19 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginTop="10dp"
-            android:textSize="18sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/plant_detail_distribution"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="主要分布于一教学楼附近。"
             app:layout_constraintTop_toBottomOf="@id/plant_detail_description"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginTop="10dp"
-            android:textSize="18sp" />
+            android:textSize="14sp"
+            android:gravity="left"/>
 
     </android.support.constraint.ConstraintLayout>
 

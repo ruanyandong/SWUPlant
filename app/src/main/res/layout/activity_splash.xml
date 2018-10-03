@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_background">
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,56 +18,57 @@
             />
 
         <TextView
+            android:id="@+id/splash_text_top"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/splash_top_text"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:textStyle="bold"
             android:layout_marginTop="20dp"
             android:textSize="36sp"/>
 
-
-
     </LinearLayout>
 
-
-
-    <!--<TextView
-        android:id="@+id/start_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="开启奇妙之旅"
-        android:padding="5dp"
-        android:textColor="@android:color/white"
-        android:textSize="22sp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/splash_start_textview_style"/>-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:gravity="center"
+        android:layout_margin="5dp"
         android:layout_alignParentBottom="true">
 
-        <TextView
-            android:layout_marginTop="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/splash_bottom_text_top"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:textSize="25sp"/>
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/flower"
+            android:layout_margin="5dp"/>
 
-        <TextView
-            android:layout_marginTop="20dp"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/splash_bottom_text_bottom"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:textSize="25sp"/>
+            android:gravity="center"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/splash_text_middle"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/splash_bottom_text_top"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/splash_text_bottom"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/splash_bottom_text_bottom"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textSize="12sp"/>
+        </LinearLayout>
+
 
     </LinearLayout>
 </RelativeLayout>

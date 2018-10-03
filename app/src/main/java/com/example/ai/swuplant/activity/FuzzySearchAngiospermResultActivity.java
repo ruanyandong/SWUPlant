@@ -2,6 +2,7 @@ package com.example.ai.swuplant.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import com.example.ai.swuplant.R;
@@ -32,6 +33,7 @@ public class FuzzySearchAngiospermResultActivity extends BaseActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle !=null){
             List<String> plantFeatureList = bundle.getStringArrayList(Constant.PLANT_FEATURE);
+
             String habitStr = plantFeatureList.get(0);
             String stemStr = plantFeatureList.get(1);
             String thornStr= plantFeatureList.get(2);
@@ -45,27 +47,36 @@ public class FuzzySearchAngiospermResultActivity extends BaseActivity {
             String flowerStr = plantFeatureList.get(10);
             String fruitStr = plantFeatureList.get(11);
 
+            // 不确定
+            String indetermination = getResources().getString(R.string.indetermination);
+
+            // 明确的特征
+            List<String> specificFeature = new ArrayList<>();
+            for (int i = 0; i < plantFeatureList.size(); i++) {
+                if (!plantFeatureList.get(i).equals(indetermination)){
+                    specificFeature.add(plantFeatureList.get(i));
+                }
+            }
+            int length = specificFeature.size();
+
             for (int i = 0; i < plantModelList.size(); i++) {
                String description = plantModelList.get(i).getPlantDescription();
 
-                if ((description.contains(habitStr) &&
-                        description.contains(stemStr) &&
-                        description.contains(thornStr) &&
-                        description.contains(milkStr)) ||
-
-                        (description.contains(stipuleStr) &&
-                        description.contains(leafAppearanceStr) &&
-                        description.contains(leafBearingFormStr) &&
-                        description.contains(petioleStr)) ||
-
-                        (description.contains(veinStr) &&
-                        description.contains(leafMarginStr) &&
-                        description.contains(flowerStr) &&
-                        description.contains(fruitStr))){
-
-                    plantModels.add(plantModelList.get(i));
-
+               if (length == 0){
+                   plantModels.add(plantModelList.get(i));
+               }else {
+                   boolean contain = true;
+                   for (int j = 0; j < length; j++) {
+                       if (!description.contains(specificFeature.get(j))){
+                           contain = false;
+                           break;
+                       }
+                   }
+                   if (contain){
+                       plantModels.add(plantModelList.get(i));
+                   }
                 }
+
             }
         }
 
@@ -75,6 +86,7 @@ public class FuzzySearchAngiospermResultActivity extends BaseActivity {
     protected void initView() {
         recyclerView = findViewById(R.id.angiospermList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         mAdapter = new AngiospermSearchListAdapter(this,plantModels);
         mAdapter.setOnItemClickListener(new AngiospermSearchListAdapter.OnItemClickListener() {
             @Override

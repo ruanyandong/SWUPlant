@@ -2,11 +2,13 @@ package com.example.ai.swuplant.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.adapter.FernListAdapter;
+import com.example.ai.swuplant.adapter.GymnospermListAdapter;
 import com.example.ai.swuplant.base.BaseActivity;
 import com.example.ai.swuplant.entity.PlantModel;
 import com.example.ai.swuplant.utils.Constant;
@@ -20,7 +22,7 @@ import static com.example.ai.swuplant.base.BaseApplication.gymnospermList;
 public class GymnospermActivity extends BaseActivity {
 
     private RecyclerView recyclerView;
-    private FernListAdapter mAdapter;
+    private GymnospermListAdapter mAdapter;
     private List<PlantModel> plantModels = new ArrayList<>();
 
     @Override
@@ -33,9 +35,10 @@ public class GymnospermActivity extends BaseActivity {
     @Override
     protected void initView() {
         recyclerView = findViewById(R.id.angiospermList);
-        mAdapter = new FernListAdapter(GymnospermActivity.this,plantModels);
+        mAdapter = new GymnospermListAdapter(GymnospermActivity.this,plantModels);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter.setOnItemClickListener(new FernListAdapter.OnItemClickListener() {
+        recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        mAdapter.setOnItemClickListener(new GymnospermListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(String plantName) {
                 Bundle bundle = new Bundle();

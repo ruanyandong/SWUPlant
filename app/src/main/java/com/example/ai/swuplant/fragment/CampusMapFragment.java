@@ -114,16 +114,25 @@ public class CampusMapFragment extends BaseFragment {
         initView(view);
         initEvent();
 
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mMapView.onResume();
+
         checkPermission();
         checkGPS();
-
         addOverlays(pointInfoList);
-
         setOnMarkerListener();
         setOnMapClickListener();
 
-        return view;
+
     }
+
+
+
 
     private void addOverlays(List<PointInfo> pointList){
         /**
@@ -194,11 +203,7 @@ public class CampusMapFragment extends BaseFragment {
 
                 tv.setPadding(30,20,30,50);
                 int pointNumber = infoBean.getPointNumber();
-                if (pointNumber > 102){
-                    pointNumber = pointNumber/2;
-                }
-                tv.setText(pointNumber+"号点");
-
+                tv.setText(getResources().getString(R.string.query));
                 LatLng latLng=marker.getPosition();
 
 
@@ -207,12 +212,9 @@ public class CampusMapFragment extends BaseFragment {
 
                 baiduMap.showInfoWindow(infoWindow);
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        IntentUtils.showActivity(getActivity(), PointInfoActivity.class,bundle);
-                    }
-                },1000);
+                tv.setOnClickListener(v->{
+                    IntentUtils.showActivity(getActivity(), PointInfoActivity.class,bundle);
+                });
 
                 return true;
             }
@@ -280,7 +282,6 @@ public class CampusMapFragment extends BaseFragment {
     private void initLocation(){
 
         mLocationMode= MyLocationConfiguration.LocationMode.NORMAL;
-
         LocationClientOption locationClientOption=new LocationClientOption();
         locationClientOption.setCoorType("bd09ll");
         locationClientOption.setIsNeedAddress(true);
@@ -387,12 +388,6 @@ public class CampusMapFragment extends BaseFragment {
 
 
     }
-    @Override
-    public void onResume() {
-        super.onResume();
-        mMapView.onResume();
-
-    }
 
     @Override
     public void onPause() {
@@ -471,22 +466,20 @@ public class CampusMapFragment extends BaseFragment {
         mLatitude=bdLocation.getLatitude();
         mLongitude=bdLocation.getLongitude();
 
-
-        if (isFirstLocation){
-            LatLng latLng=new LatLng(bdLocation.getLatitude(),bdLocation.getLongitude());
-
-            MapStatusUpdate mapStatusUpdate= MapStatusUpdateFactory.newLatLngZoom(latLng,20f) ;
+        if (isFirstLocation) {
+            LatLng latLng = new LatLng(bdLocation.getLatitude(), bdLocation.getLongitude());
+            MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.newLatLngZoom(latLng, 16f);
             baiduMap.animateMapStatus(mapStatusUpdate);
 
-
             /*判断baiduMap是已经移动到指定位置*/
-            if (baiduMap.getLocationData()!=null)
-                if (baiduMap.getLocationData().latitude==bdLocation.getLatitude()
-                        &&baiduMap.getLocationData().longitude==bdLocation.getLongitude()){
+            if (baiduMap.getLocationData() != null) {
+                if (baiduMap.getLocationData().latitude == bdLocation.getLatitude()
+                        && baiduMap.getLocationData().longitude == bdLocation.getLongitude()) {
                     isFirstLocation = false;
                 }
-
+            }
         }
+
     }
 
 

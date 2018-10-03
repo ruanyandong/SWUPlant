@@ -2,6 +2,7 @@ package com.example.ai.swuplant.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -56,6 +57,7 @@ public class PointInfoActivity extends BaseActivity {
         recyclerView = findViewById(R.id.pointInfoPlantList);
         mAdapter = new PointInfoListAdapter(this,plantModels);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new PointInfoListAdapter.OnItemClickListener() {
             @Override

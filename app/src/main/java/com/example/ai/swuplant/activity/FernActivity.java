@@ -2,6 +2,7 @@ package com.example.ai.swuplant.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -34,6 +35,7 @@ public class FernActivity extends BaseActivity {
         recyclerView = findViewById(R.id.angiospermList);
         mAdapter = new FernListAdapter(FernActivity.this,plantModels);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         mAdapter.setOnItemClickListener(new FernListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(String plantName) {

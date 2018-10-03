@@ -6,32 +6,38 @@
         <item>灌木 </item>
         <item>藤本</item>
         <item>乔木</item>
+        <item>不确定</item>
     </string-array>
 
     <string-array name="stem">
         <item>圆柱形</item>
         <item>具棱 </item>
         <item>根状茎</item>
+        <item>不确定</item>
     </string-array>
 
     <string-array name="thorn">
         <item>有刺</item>
         <item>无刺</item>
+        <item>不确定</item>
     </string-array>
 
     <string-array name="milk">
         <item>有乳汁</item>
         <item>无乳汁</item>
+        <item>不确定</item>
     </string-array>
 
     <string-array name="stipule">
         <item>有托叶</item>
         <item>无托叶</item>
+        <item>不确定</item>
     </string-array>
     
     <string-array name="leaf_appearance">
         <item>单叶</item>
         <item>复叶</item>
+        <item>不确定</item>
     </string-array>
     
     <string-array name="leaf_bearing_form">
@@ -41,28 +47,33 @@
         <item>叶簇生</item>
         <item>叶轮生</item>
         <item>叶丛生</item>
+        <item>不确定</item>
     </string-array>
     
     <string-array name="petiole">
         <item>叶柄无明显特征</item>
         <item>叶柄有腺体</item>
         <item>叶柄有毛</item>
+        <item>不确定</item>
     </string-array>
     
     <string-array name="vein">
         <item>网状脉</item>
         <item>平行脉</item>
         <item>掌状网脉</item>
+        <item>不确定</item>
     </string-array>
     
     <string-array name="leaf_margin">
         <item>全缘</item>
         <item>有齿、缺刻或分裂</item>
+        <item>不确定</item>
     </string-array>
 
     <string-array name="flower">
         <item>单花</item>
         <item>花序</item>
+        <item>不确定</item>
     </string-array>
 
     <string-array name="fruit">
@@ -70,6 +81,7 @@
         <item>聚花果</item>
         <item>单果</item>
         <item>果实未见</item>
+        <item>不确定</item>
     </string-array>
 
     <string-array name="plantCN">
@@ -345,7 +357,7 @@
         <item>Melia toosendan Sieb. et Zucc.</item>
         <item>Salix babylonica</item>
         <item>Malus halliana Koehne</item>
-        <item>Ulmus pumila L. 'Tenue'</item>
+        <item>Ulmus pumila L.Tenue</item>
         <item>Philodenron  selloum  Koch</item>
         <item>Neosinocalamus affinis (Rendle) Keng</item>
         <item>Robinia pseudoacacia</item>
@@ -373,13 +385,13 @@
         <item>Liquidambar formosana</item>
         <item>Pterocarya stenoptera</item>
         <item>Yucca gloriosa L.</item>
-        <item>Bambusa multiplex (Lour.) Raeusch. ex Schult. 'Fernleaf' R. A. Young</item>
+        <item>Bambusa multiplex (Lour.) Raeusch. ex Schult. Fernleaf R. A. Young</item>
         <item>Hibiscus rosa-sinensis Linn.</item>
         <item>Sapindaceae Koelreuteria bipinnata Franch.</item>
 
         <item>Citrus reticulata Blanco</item>
         <item>Poncirus trifoliata (L.) Raf.</item>
-        <item>Broussonetia papyrifera (Linn.) L'Hér. ex Vent.</item>
+        <item>Broussonetia papyrifera (Linn.) L Hér. ex Vent.</item>
         <item>Photinia glabra (Thunb.) Maxim.</item>
         <item>Monstera deliciosa</item>
         <item>Phyllostachys bambusoides Sieb. et Zucc.</item>
@@ -393,7 +405,7 @@
         <item>Magnolia grandiflora L.</item>
         <item>Lindera megaphylla Hemsl.</item>
         <item>Excoecaria cochinchinensis Lour.</item>
-        <item>Acer palmatum  'Atropurpureum'</item>
+        <item>Acer palmatum Atropurpureum</item>
         <item>Loropetalum chinense var. rubrum Yieh</item>
         <item>Loropetalum chinense var. rubrum Yieh</item>
         <item>Ricinus communis L.</item>
@@ -403,7 +415,7 @@
         <item>Saxifraga stolonifera Curt.</item>
         <item>Zanthoxylum bungeanum Maxim.</item>
         <item>Pilea cadierei Gagnep.</item>
-        <item>Aucuba japonica Thunb. var. variegata D'ombr.</item>
+        <item>Aucuba japonica Thunb. var. variegata D ombr.</item>
         <item>Alpinia zerumbet ’Variegata’</item>
         <item>Sophora japonica Linn.</item>
         <item>Dioscorea bulbifera L.</item>
@@ -503,7 +515,7 @@
         <item>Cycas revoluta Thunb.</item>
         <item>Pontederia cordata L.</item>
 
-        <item>Sabina chinensis (L.) Ant. 'Pyramidalis'</item>
+        <item>Sabina chinensis (L.) Ant. Pyramidalis</item>
         <item>Amygdalus persica L.</item>
         <item>Asparagus cochinchinensis (Lour.) Merr.</item>
         <item>Cinnamomum japonicum Sieb.</item>
@@ -525,7 +537,7 @@
         <item>Cinnamomum camphora (L.) presl </item>
         <item>Helianthus annuus L.</item>
         <item>Ligustrum sinense Lour</item>
-        <item>Bambusa multiplex (Lour.) Raeusch. ex Schult. 'Alphonse-Kar' R. A. Young</item>
+        <item>Bambusa multiplex (Lour.) Raeusch. ex Schult. Alphonse-Kar R. A. Young</item>
         <item>Ligustrum quihoui Carr.</item>
         <item>Bambusa multiplex (Lour.) Raeusch. ex Schult.</item>
         <item>Armeniaca vulgaris Lam. var. vulgaris</item>
