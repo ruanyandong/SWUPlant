@@ -2,6 +2,9 @@ package com.example.ai.swuplant.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -12,6 +15,8 @@ import com.example.ai.swuplant.utils.IntentUtils;
 import java.util.ArrayList;
 
 public class FuzzySearchActivity extends BaseActivity {
+
+    private Toolbar toolbar;
 
     private Spinner habitSpinner;// 习性
     private Spinner stemSpinner;// 茎
@@ -49,6 +54,9 @@ public class FuzzySearchActivity extends BaseActivity {
         flowerSpinner = findViewById(R.id.flower);//花序
         fruitSpiiner = findViewById(R.id.fruit);//果实
         okBtn = findViewById(R.id.ok);
+
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
     }
 
@@ -95,6 +103,23 @@ public class FuzzySearchActivity extends BaseActivity {
     @Override
     protected int getLayoutId() {
         return R.layout.activity_fuzzy_search;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.help_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.help_menu:
+                IntentUtils.showActivity(this,HelpActivity.class);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

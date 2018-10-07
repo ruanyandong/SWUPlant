@@ -28,6 +28,7 @@ import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.MapPoi;
+import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
@@ -45,6 +46,7 @@ import com.example.ai.swuplant.customcomponent.ClearEditText;
 import com.example.ai.swuplant.entity.PointInfo;
 import com.example.ai.swuplant.utils.Constant;
 import com.example.ai.swuplant.utils.IntentUtils;
+import com.example.ai.swuplant.utils.MyOrientationListener;
 import com.example.ai.swuplant.utils.ToastUtils;
 
 import java.util.ArrayList;
@@ -61,8 +63,8 @@ public class CampusMapFragment extends BaseFragment {
     private BaiduMap baiduMap = null;
     private LocationClient locationClient = null;
 
-    private boolean isFirstLocation=true;
-
+    private boolean isResume=true;
+    private boolean isFirstLocation = true;
     private MyLocationListener myLocationListener;
     /**
      * 地图移位后回到原位，记录新的经纬度
@@ -86,9 +88,19 @@ public class CampusMapFragment extends BaseFragment {
      * infoWindow
      */
     private InfoWindow infoWindow;
+    private MapStatus mapStatus;
+    private MapStatusUpdate mapStatusUpdate;
 
-    private static final String TAG = CampusMapFragment.class.getSimpleName();
+    /**
+     * 方向传感器监听器
+     */
+    private MyOrientationListener myOrientationListener;
 
+
+    /**
+     *记录当前的X方向值
+     */
+    private float mCurrentX;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -101,7 +113,7 @@ public class CampusMapFragment extends BaseFragment {
         locationClient=new LocationClient(getActivity().getApplicationContext());
         myLocationListener=new MyLocationListener();
         //注册监听器
-        locationClient.registerLocationListener(myLocationListener);
+
     }
 
     @Nullable
@@ -113,17 +125,22 @@ public class CampusMapFragment extends BaseFragment {
         view=inflater.inflate(R.layout.fragment_compus_map, container, false);
         initView(view);
         initEvent();
-
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mMapView.onResume();
-
         checkPermission();
         checkGPS();
+        mMapView.onResume();
+
+        if (mapStatus != null){
+            mapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mapStatus);
+            baiduMap.setMapStatus(mapStatusUpdate);
+        }
+
+        locationClient.registerLocationListener(myLocationListener);
         addOverlays(pointInfoList);
         setOnMarkerListener();
         setOnMapClickListener();
@@ -157,14 +174,15 @@ public class CampusMapFragment extends BaseFragment {
             marker.setExtraInfo(bundle);
         }
         //把地图移动到到最后一个覆盖物的位置
-        MapStatusUpdate update=MapStatusUpdateFactory.newLatLng(latLng);
-        baiduMap.setMapStatus(update);
+        //MapStatusUpdate update=MapStatusUpdateFactory.newLatLng(latLng);
+        //baiduMap.setMapStatus(update);
     }
 
     /**
      * 点击地图的时候，隐藏具体信息、隐藏infoWindows
      */
     private void setOnMapClickListener() {
+
         baiduMap.setOnMapClickListener(new BaiduMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
@@ -281,8 +299,9 @@ public class CampusMapFragment extends BaseFragment {
      */
     private void initLocation(){
 
-        mLocationMode= MyLocationConfiguration.LocationMode.NORMAL;
+        mLocationMode= MyLocationConfiguration.LocationMode.COMPASS;
         LocationClientOption locationClientOption=new LocationClientOption();
+        locationClientOption.setLocationMode(LocationClientOption.LocationMode.Battery_Saving);
         locationClientOption.setCoorType("bd09ll");
         locationClientOption.setIsNeedAddress(true);
         locationClientOption.setOpenGps(true);
@@ -291,6 +310,22 @@ public class CampusMapFragment extends BaseFragment {
         locationClient.setLocOption(locationClientOption);
         //初始化定位图标
         mIconLocation= BitmapDescriptorFactory.fromResource(R.drawable.arrow);
+
+        myOrientationListener=new MyOrientationListener(getActivity());
+
+        /**
+         * 当方向改变时，转动定位图标
+         */
+        myOrientationListener.setOrientationListener(
+                new MyOrientationListener.onOrientationListener() {
+                    @Override
+                    public void onOrientationChanged(float x) {
+                        /**
+                         * 更新方向值
+                         */
+                        mCurrentX=x;
+                    }
+                });
 
     }
 
@@ -378,21 +413,27 @@ public class CampusMapFragment extends BaseFragment {
          * 关闭定位
          */
         locationClient.stop();
-
+/**
+ * 停止方向传感器
+ */
+        myOrientationListener.stop();
     }
 
     @Override
     public void onDestroy() {
+
         super.onDestroy();
         mMapView.onDestroy();
-
 
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        mapStatus = baiduMap.getMapStatus();
         mMapView.onPause();
+        locationClient.unRegisterLocationListener(myLocationListener);
+        isResume = true;
 
     }
 
@@ -428,6 +469,11 @@ public class CampusMapFragment extends BaseFragment {
          * 开始定位
          */
         locationClient.start();
+
+        /**
+         * 开启方向传感器
+         */
+        myOrientationListener.start();
     }
 
 
@@ -439,7 +485,6 @@ public class CampusMapFragment extends BaseFragment {
                     bdLocation.getLocType()==BDLocation.TypeNetWorkLocation){
                 navigationTo(bdLocation);
 
-
             }
         }
 
@@ -449,6 +494,7 @@ public class CampusMapFragment extends BaseFragment {
         MyLocationData.Builder builder=new MyLocationData.Builder();
         builder.latitude(bdLocation.getLatitude());
         builder.longitude(bdLocation.getLongitude());
+        builder.direction(mCurrentX);//定位方向
         builder.accuracy(bdLocation.getRadius());
         MyLocationData data=builder.build();
 
@@ -466,16 +512,24 @@ public class CampusMapFragment extends BaseFragment {
         mLatitude=bdLocation.getLatitude();
         mLongitude=bdLocation.getLongitude();
 
-        if (isFirstLocation) {
+        if (isResume) {
             LatLng latLng = new LatLng(bdLocation.getLatitude(), bdLocation.getLongitude());
-            MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.newLatLngZoom(latLng, 16f);
+
+            MapStatusUpdate mapStatusUpdate ;
+            if (isFirstLocation){
+                mapStatusUpdate= MapStatusUpdateFactory.newLatLngZoom(latLng, 16f);
+                isFirstLocation = false;
+            }else {
+                mapStatusUpdate = MapStatusUpdateFactory.newLatLng(latLng);
+            }
+
             baiduMap.animateMapStatus(mapStatusUpdate);
 
             /*判断baiduMap是已经移动到指定位置*/
             if (baiduMap.getLocationData() != null) {
                 if (baiduMap.getLocationData().latitude == bdLocation.getLatitude()
                         && baiduMap.getLocationData().longitude == bdLocation.getLongitude()) {
-                    isFirstLocation = false;
+                    isResume = false;
                 }
             }
         }

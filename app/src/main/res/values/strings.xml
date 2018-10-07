@@ -46,8 +46,9 @@
     <string name="none_select">反选</string>
     <string name="delete">删除</string>
 
+    <string name="angiosperm_fuzzy_search">被子植物模糊检索</string>
     <string name="angiosperm_fuzzy_search_result">被子植物模糊检索结果</string>
 
     <string name="indetermination">不确定</string>
-
+    <string name="help_menu">帮助</string>
 </resources>
