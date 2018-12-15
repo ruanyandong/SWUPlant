@@ -1,6 +1,9 @@
 package com.example.ai.swuplant.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +25,7 @@ import com.example.ai.swuplant.utils.Constant;
 import com.example.ai.swuplant.utils.IntentUtils;
 import com.example.ai.swuplant.utils.PinyinComparator;
 import com.example.ai.swuplant.utils.PinyinUtils;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -88,15 +92,12 @@ public class FloraFragment extends BaseFragment implements SortAdapter.OnItemCli
         adapter = new SortAdapter(getActivity(), SourceDateList);
         mRecyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(this);
-        //item点击事件
-        /*adapter.setOnItemClickListener(new SortAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Toast.makeText(MainActivity.this, ((SortModel)adapter.getItem(position)).getName(),Toast.LENGTH_SHORT).show();
-            }
-        });*/
-        mClearEditText = (ClearEditText) view.findViewById(R.id.filter_edit);
 
+        search(view);
+    }
+
+    private void search(View view) {
+        mClearEditText = (ClearEditText) view.findViewById(R.id.filter_edit);
         //根据输入框输入值的改变来过滤搜索
         mClearEditText.addTextChangedListener(new TextWatcher() {
 
@@ -117,6 +118,8 @@ public class FloraFragment extends BaseFragment implements SortAdapter.OnItemCli
             }
         });
     }
+
+
     /**
      * 为RecyclerView填充数据
      *

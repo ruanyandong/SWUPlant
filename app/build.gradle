@@ -57,4 +57,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation files('libs/BaiduLBS_Android.jar')
     implementation files('libs/pinyin4j-2.5.0.jar')
+
 }
