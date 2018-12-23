@@ -2,6 +2,8 @@ package com.example.ai.swuplant.login;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Context;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
@@ -17,15 +19,16 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.login.component.DrawableTextView;
 import com.example.ai.swuplant.login.listener.KeyboardWatcher;
-import com.example.ai.swuplant.utils.IntentUtils;
+import com.example.ai.swuplant.net.ApiServiceExecutor;
+import com.example.ai.swuplant.net.HttpCallBack;
+import com.example.ai.swuplant.net.bean.RegisterBackResult;
+import com.example.ai.swuplant.net.broadcast.NetworkBroadcastReceiver;
 
-public class LoginActivity extends FragmentActivity implements View.OnClickListener, KeyboardWatcher.SoftKeyboardStateListener {
+public class RegisterActivity extends FragmentActivity implements View.OnClickListener, KeyboardWatcher.SoftKeyboardStateListener {
 
     private DrawableTextView logo;
     private EditText et_mobile;
@@ -33,10 +36,7 @@ public class LoginActivity extends FragmentActivity implements View.OnClickListe
     private ImageView iv_clean_phone;
     private ImageView clean_password;
     private ImageView iv_show_pwd;
-
-    private Button btn_login;
-    private TextView register_user;
-    private TextView forget_password;
+    private Button btn_register;
 
     private int screenHeight = 0;//屏幕高度
     private float scale = 0.8f; //logo缩放比例
@@ -45,17 +45,36 @@ public class LoginActivity extends FragmentActivity implements View.OnClickListe
 
     private View root;
 
+    private NetworkBroadcastReceiver receiver;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_register);
         initView();
         initListener();
 
         keyboardWatcher = new KeyboardWatcher(findViewById(Window.ID_ANDROID_CONTENT));
         keyboardWatcher.addSoftKeyboardStateListener(this);
 
+        registerBroadcastReceiver();
     }
+
+    /**
+     * 注册网络广播
+     */
+    private void registerBroadcastReceiver(){
+       if (receiver == null){
+           receiver = new NetworkBroadcastReceiver();
+       }
+       IntentFilter intentFilter = new IntentFilter();
+       intentFilter.addAction(Context.CONNECTIVITY_SERVICE);
+       registerReceiver(receiver,intentFilter);
+    }
+    private void unRegisterBroadcastReceiver(){
+        unregisterReceiver(receiver);
+    }
+
     private void initView() {
         logo = (DrawableTextView) findViewById(R.id.logo);
         et_mobile = (EditText) findViewById(R.id.et_mobile);
@@ -63,11 +82,7 @@ public class LoginActivity extends FragmentActivity implements View.OnClickListe
         iv_clean_phone = (ImageView) findViewById(R.id.iv_clean_phone);
         clean_password = (ImageView) findViewById(R.id.clean_password);
         iv_show_pwd = (ImageView) findViewById(R.id.iv_show_pwd);
-
-        btn_login = (Button) findViewById(R.id.btn_login);
-        register_user = (TextView) findViewById(R.id.regist);
-        forget_password = (TextView) findViewById(R.id.forget_password);
-
+        btn_register = (Button) findViewById(R.id.btn_register);
         service = findViewById(R.id.service);
         body = findViewById(R.id.body);
         screenHeight = this.getResources().getDisplayMetrics().heightPixels; //获取屏幕高度
@@ -79,7 +94,7 @@ public class LoginActivity extends FragmentActivity implements View.OnClickListe
         iv_clean_phone.setOnClickListener(this);
         clean_password.setOnClickListener(this);
         iv_show_pwd.setOnClickListener(this);
-        register_user.setOnClickListener(this);
+        btn_register.setOnClickListener(this);
 
         et_mobile.addTextChangedListener(new TextWatcher() {
             @Override
@@ -123,7 +138,7 @@ public class LoginActivity extends FragmentActivity implements View.OnClickListe
                     return;
                 if (!s.toString().matches("[A-Za-z0-9]+")) {
                     String temp = s.toString();
-                    Toast.makeText(LoginActivity.this, R.string.please_input_limit_pwd, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, R.string.please_input_limit_pwd, Toast.LENGTH_SHORT).show();
                     s.delete(temp.length() - 1, temp.length());
                     et_password.setSelection(s.length());
                 }
@@ -202,16 +217,43 @@ public class LoginActivity extends FragmentActivity implements View.OnClickListe
                 if (!TextUtils.isEmpty(pwd))
                     et_password.setSelection(pwd.length());
                 break;
-            case R.id.regist:
-                IntentUtils.showActivity(LoginActivity.this,RegisterActivity.class);
+            case R.id.btn_register:
+                Toast.makeText(this,"注册",Toast.LENGTH_SHORT).show();
+                registerUser();
                 break;
-
         }
     }
 
 
+    private void registerUser(){
+        String username = et_mobile.getText().toString();
+        String password = et_password.getText().toString();
+        ApiServiceExecutor.getInstance().registerUser(username, password, new HttpCallBack() {
+            @Override
+            public  void onSuccess(Object response) {
+                if (response != null){
+                    RegisterBackResult result = (RegisterBackResult)response;
+                    Log.d("TAG", "onSuccess: "+result.toString());
+
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable e) {
+                Log.d("TAG", "onFailure: "+e.getMessage()+" "+e.getLocalizedMessage()+" "+e.toString());
+                e.printStackTrace();
+            }
+        });
+    }
+
+
+
+
+
     @Override
     protected void onDestroy() {
+        unRegisterBroadcastReceiver();
+
         super.onDestroy();
         keyboardWatcher.removeSoftKeyboardStateListener(this);
     }

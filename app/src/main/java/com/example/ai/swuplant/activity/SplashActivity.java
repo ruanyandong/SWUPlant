@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.base.BaseActivity;
+import com.example.ai.swuplant.login.LoginActivity;
 import com.example.ai.swuplant.utils.FontUtils;
 import com.example.ai.swuplant.utils.IntentUtils;
 
@@ -62,7 +63,7 @@ public class SplashActivity extends BaseActivity {
             public void onAnimationEnd(Animation animation) {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                     ObjectAnimator objectAnimatorTran = ObjectAnimator.ofArgb(mSplashImage, "ColorFilter", getResources().getColor(R.color.colorWhite), getResources().getColor(R.color.colorAccent));
-                    //objectAnimatorTran.setDuration(500);
+                    objectAnimatorTran.setDuration(3000);
                     //objectAnimatorTran.setRepeatCount(-1);
                     objectAnimatorTran.start();
                 }
@@ -70,10 +71,10 @@ public class SplashActivity extends BaseActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        IntentUtils.showActivity(SplashActivity.this,MainActivity.class);
+                        IntentUtils.showActivity(SplashActivity.this,LoginActivity.class);
                         finish();
                     }
-                },1000);
+                },5000);
 
             }
 

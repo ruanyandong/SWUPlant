@@ -149,8 +149,6 @@ public class CampusMapFragment extends BaseFragment {
     }
 
 
-
-
     private void addOverlays(List<PointInfo> pointList){
         /**
          * 清除图层

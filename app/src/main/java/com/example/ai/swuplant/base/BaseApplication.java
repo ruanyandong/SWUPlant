@@ -2,11 +2,12 @@ package com.example.ai.swuplant.base;
 
 import android.app.Application;
 import android.content.res.TypedArray;
-
 import com.baidu.mapapi.SDKInitializer;
 import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.entity.PlantModel;
 import com.example.ai.swuplant.entity.PointInfo;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,8 +38,13 @@ public class BaseApplication extends Application {
         SDKInitializer.initialize(getApplicationContext());
 
         init();
+
+        initLogger();
     }
 
+    private void initLogger(){
+        Logger.addLogAdapter(new AndroidLogAdapter());
+    }
     private void init(){
         plantCnNameList = Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.plantCN));
         plantEnNameList = Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.plantEn));
