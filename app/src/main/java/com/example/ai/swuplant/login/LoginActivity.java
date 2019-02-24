@@ -2,7 +2,10 @@ package com.example.ai.swuplant.login;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
@@ -21,9 +24,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ai.swuplant.R;
+import com.example.ai.swuplant.activity.MainActivity;
 import com.example.ai.swuplant.login.component.DrawableTextView;
 import com.example.ai.swuplant.login.listener.KeyboardWatcher;
-import com.example.ai.swuplant.utils.IntentUtils;
+import com.example.ai.swuplant.net.bean.LoginBackResult;
+import com.example.ai.swuplant.net.netframe.ApiServiceExecutor;
+import com.example.ai.swuplant.net.netframe.HttpCallBack;
+import com.example.ai.swuplant.net.utils.netUtil;
+import com.example.customdialog.SweetAlertDialog;
+import com.orhanobut.logger.Logger;
 
 public class LoginActivity extends FragmentActivity implements View.OnClickListener, KeyboardWatcher.SoftKeyboardStateListener {
 
@@ -80,6 +89,8 @@ public class LoginActivity extends FragmentActivity implements View.OnClickListe
         clean_password.setOnClickListener(this);
         iv_show_pwd.setOnClickListener(this);
         register_user.setOnClickListener(this);
+        btn_login.setOnClickListener(this);
+
 
         et_mobile.addTextChangedListener(new TextWatcher() {
             @Override
@@ -174,7 +185,7 @@ public class LoginActivity extends FragmentActivity implements View.OnClickListe
 
     }
     private boolean flag = false;
-
+    private SweetAlertDialog loadingDialog = null;
     @Override
     public void onClick(View v) {
         int id = v.getId();
@@ -202,13 +213,110 @@ public class LoginActivity extends FragmentActivity implements View.OnClickListe
                 if (!TextUtils.isEmpty(pwd))
                     et_password.setSelection(pwd.length());
                 break;
+            case R.id.btn_login:
+                if (netUtil.isNetworkAvailable(this)){
+                    loadingDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+                            .setTitleText("Loading");
+                    loadingDialog.show();
+                    loadingDialog.setCancelable(false);
+
+                    userLogin();
+                }else {
+                    // 没有网络
+                    new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText("糟糕...")
+                            .setContentText("网络无连接！")
+                            .setCancelText("取消")
+                            .setConfirmText("设置网络")
+                            .showCancelButton(true)
+                            .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismiss();
+                                }
+                            })
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismiss();
+                                    startActivity(new Intent(Settings.ACTION_SETTINGS));
+
+                                }
+                            })
+                            .show();
+                }
+                break;
             case R.id.regist:
-                IntentUtils.showActivity(LoginActivity.this,RegisterActivity.class);
+                Intent intent = new Intent(this,RegisterActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.activity_slide_in_up,R.anim.activity_hold);
                 break;
 
         }
     }
 
+    private void userLogin(){
+        String username = et_mobile.getText().toString();
+        String password = et_password.getText().toString();
+        ApiServiceExecutor.getInstance().loginUser(username, password, new HttpCallBack() {
+            @Override
+            public void onSuccess(Object response) {
+                if (response != null){
+                    LoginBackResult result = (LoginBackResult) response;
+                    Logger.d("TAG","login result is "+response.toString());
+
+                    dealWithCallBack(result);
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable e) {
+                e.printStackTrace();
+                e.getMessage();
+                loadingDialog.setTitleText("糟糕...")
+                        .setContentText("出现异常错误!")
+                        .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+            }
+        });
+    }
+
+    private void dealWithCallBack(LoginBackResult result){
+        if (result.getCode() == -1){
+            loadingDialog.setTitleText("遗憾...")
+                    .setContentText("该账号不存在！")
+                    .setConfirmText("去注册")
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            loadingDialog.dismiss();
+                            Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.activity_slide_in_up,R.anim.activity_hold);
+
+                        }
+                    })
+                    .setCancelText("取消")
+                    .changeAlertType(SweetAlertDialog.WARNING_TYPE);
+        }else if (result.getCode() == 0){
+            loadingDialog.setTitleText("登录成功！")
+                    .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (loadingDialog.isShowing()){
+                        loadingDialog.dismiss();
+                    }
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(android.R.anim.slide_out_right,R.anim.activity_hold);
+                }
+            },1000);
+        }else if (result.getCode() == 500){
+            loadingDialog.setTitleText("糟糕...")
+                    .setContentText("出现异常错误!")
+                    .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+        }
+    }
 
     @Override
     protected void onDestroy() {

@@ -1,6 +1,9 @@
-package com.example.ai.swuplant.net;
+package com.example.ai.swuplant.net.netframe;
 
+import com.example.ai.swuplant.net.bean.LoginBackResult;
 import com.example.ai.swuplant.net.bean.RegisterBackResult;
+
+import java.util.logging.Handler;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -23,8 +26,8 @@ public class ApiServiceExecutor extends BaseApiServiceExecutor {
         return Singleton.INSTANCE;
     }
 
-    public void registerUser(String username,String password,HttpCallBack httpCallBack){
-        observe(mApiService.getBackResult(username,password)).map(new Function<RegisterBackResult, RegisterBackResult>() {
+    public void registerUser(String username, String password, HttpCallBack httpCallBack){
+        observe(mApiService.getRegisterBackResult(username,password)).map(new Function<RegisterBackResult, RegisterBackResult>() {
             @Override
             public RegisterBackResult apply(RegisterBackResult registerBackResult) throws Exception {
                 return registerBackResult;
@@ -38,6 +41,30 @@ public class ApiServiceExecutor extends BaseApiServiceExecutor {
             @Override
             public void onNext(RegisterBackResult registerBackResult) {
                 httpCallBack.onSuccess(registerBackResult);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                httpCallBack.onFailure(e);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
+
+    public void loginUser(String username, String password, HttpCallBack httpCallBack){
+        observe(mApiService.getLoginBackResult(username,password)).subscribe(new Observer<LoginBackResult>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(LoginBackResult result) {
+                httpCallBack.onSuccess(result);
             }
 
             @Override

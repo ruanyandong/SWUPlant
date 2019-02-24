@@ -27,6 +27,7 @@
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        tools:replace="android:icon"
         tools:ignore="GoogleAppIndexingWarning">
 
         <meta-data

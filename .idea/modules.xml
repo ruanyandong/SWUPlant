@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SWUPlant.iml" filepath="$PROJECT_DIR$/SWUPlant.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/customdialog/customdialog.iml" filepath="$PROJECT_DIR$/customdialog/customdialog.iml" />
     </modules>
   </component>
 </project>

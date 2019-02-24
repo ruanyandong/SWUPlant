@@ -1,4 +1,4 @@
-package com.example.ai.swuplant.net;
+package com.example.ai.swuplant.net.netframe;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;

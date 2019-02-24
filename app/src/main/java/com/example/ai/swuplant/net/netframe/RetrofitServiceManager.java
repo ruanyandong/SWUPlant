@@ -1,4 +1,4 @@
-package com.example.ai.swuplant.net;
+package com.example.ai.swuplant.net.netframe;
 
 import java.util.concurrent.TimeUnit;
 

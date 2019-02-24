@@ -2,9 +2,13 @@ package com.example.ai.swuplant.login;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
@@ -23,10 +27,16 @@ import android.widget.Toast;
 import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.login.component.DrawableTextView;
 import com.example.ai.swuplant.login.listener.KeyboardWatcher;
-import com.example.ai.swuplant.net.ApiServiceExecutor;
-import com.example.ai.swuplant.net.HttpCallBack;
+import com.example.ai.swuplant.net.netframe.ApiServiceExecutor;
+import com.example.ai.swuplant.net.netframe.HttpCallBack;
 import com.example.ai.swuplant.net.bean.RegisterBackResult;
 import com.example.ai.swuplant.net.broadcast.NetworkBroadcastReceiver;
+import com.example.ai.swuplant.net.utils.netUtil;
+import com.example.customdialog.SweetAlertDialog;
+import com.orhanobut.logger.Logger;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class RegisterActivity extends FragmentActivity implements View.OnClickListener, KeyboardWatcher.SoftKeyboardStateListener {
 
@@ -56,24 +66,9 @@ public class RegisterActivity extends FragmentActivity implements View.OnClickLi
 
         keyboardWatcher = new KeyboardWatcher(findViewById(Window.ID_ANDROID_CONTENT));
         keyboardWatcher.addSoftKeyboardStateListener(this);
-
-        registerBroadcastReceiver();
     }
 
-    /**
-     * 注册网络广播
-     */
-    private void registerBroadcastReceiver(){
-       if (receiver == null){
-           receiver = new NetworkBroadcastReceiver();
-       }
-       IntentFilter intentFilter = new IntentFilter();
-       intentFilter.addAction(Context.CONNECTIVITY_SERVICE);
-       registerReceiver(receiver,intentFilter);
-    }
-    private void unRegisterBroadcastReceiver(){
-        unregisterReceiver(receiver);
-    }
+
 
     private void initView() {
         logo = (DrawableTextView) findViewById(R.id.logo);
@@ -189,6 +184,7 @@ public class RegisterActivity extends FragmentActivity implements View.OnClickLi
 
     }
     private boolean flag = false;
+    private SweetAlertDialog loadingDialog = null;
 
     @Override
     public void onClick(View v) {
@@ -202,6 +198,7 @@ public class RegisterActivity extends FragmentActivity implements View.OnClickLi
                 break;
             case R.id.close:
                 finish();
+                overridePendingTransition(0,R.anim.activity_slide_out_down);
                 break;
             case R.id.iv_show_pwd:
                 if(flag == true){
@@ -218,8 +215,35 @@ public class RegisterActivity extends FragmentActivity implements View.OnClickLi
                     et_password.setSelection(pwd.length());
                 break;
             case R.id.btn_register:
-                Toast.makeText(this,"注册",Toast.LENGTH_SHORT).show();
-                registerUser();
+                if (netUtil.isNetworkAvailable(this)){
+                    loadingDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+                            .setTitleText("Loading");
+                    loadingDialog.show();
+                    loadingDialog.setCancelable(false);
+
+                    registerUser();
+                }else {
+                    new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText("糟糕...")
+                            .setContentText("网络无连接！")
+                            .setCancelText("取消")
+                            .setConfirmText("设置网络")
+                            .showCancelButton(true)
+                            .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismiss();
+                                }
+                            })
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismiss();
+                                    startActivity(new Intent(Settings.ACTION_SETTINGS));
+                                }
+                            })
+                            .show();
+                }
                 break;
         }
     }
@@ -233,27 +257,53 @@ public class RegisterActivity extends FragmentActivity implements View.OnClickLi
             public  void onSuccess(Object response) {
                 if (response != null){
                     RegisterBackResult result = (RegisterBackResult)response;
-                    Log.d("TAG", "onSuccess: "+result.toString());
-
+                    Logger.d("TAG", "onSuccess: "+result.toString());
+                    resultCallBack(result);
                 }
             }
 
             @Override
             public void onFailure(Throwable e) {
-                Log.d("TAG", "onFailure: "+e.getMessage()+" "+e.getLocalizedMessage()+" "+e.toString());
+                Logger.d("TAG", "onFailure: "+e.getMessage()+" "+e.getLocalizedMessage()+" "+e.toString());
                 e.printStackTrace();
+                loadingDialog.setTitleText("糟糕...")
+                        .setContentText("出现异常错误!")
+                        .changeAlertType(SweetAlertDialog.ERROR_TYPE);
             }
         });
     }
 
+    private void resultCallBack(RegisterBackResult result){
+        if (result.getCode() == -1){
+            loadingDialog.setTitleText("遗憾...")
+                    .setContentText("该账号已存在！")
+                    .setConfirmText("确定")
+                    .setCancelText("取消")
+                    .changeAlertType(SweetAlertDialog.WARNING_TYPE);
+        }else if (result.getCode() == 0){
+            loadingDialog.setTitleText("注册成功！")
+                    .setConfirmText("去登陆")
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            loadingDialog.dismiss();
+                            finish();
+                            overridePendingTransition(0,R.anim.activity_slide_out_down);
+                        }
+                    })
+                    .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+        }else if (result.getCode() == 500){
+            loadingDialog.setTitleText("糟糕...")
+                    .setContentText("出现异常错误!")
+                    .changeAlertType(SweetAlertDialog.ERROR_TYPE);
 
+        }
+    }
 
 
 
     @Override
     protected void onDestroy() {
-        unRegisterBroadcastReceiver();
-
         super.onDestroy();
         keyboardWatcher.removeSoftKeyboardStateListener(this);
     }

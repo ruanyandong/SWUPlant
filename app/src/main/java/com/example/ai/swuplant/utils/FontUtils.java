@@ -2,7 +2,6 @@ package com.example.ai.swuplant.utils;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Bundle;
 
 public class FontUtils {
 
