@@ -15,14 +15,14 @@ public class MyFavoriteDatabaseHelper extends SQLiteOpenHelper {
     // 列名
     private static final String PLANT_NAME = "plantName";
     // 列名
-    private static final String IMAGE_ID = "imageId";
+    private static final String IMAGE_URL = "imageURL";
 
     private Context context;
 
     // sql语句
     private static final String MY_FAVORITE = "create table if not exists my_favorite ("+
                      "id integer primary key autoincrement,"+
-                     "imageId integer,"+
+                     "imageURL text,"+
                      "plantName varchar)";
 
     public MyFavoriteDatabaseHelper(Context context) {
@@ -43,10 +43,10 @@ public class MyFavoriteDatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public void insert(int imageId,String plantName){
+    public void insert(String imageURL,String plantName){
         SQLiteDatabase database=getWritableDatabase();
         ContentValues cv=new ContentValues();
-        cv.put(IMAGE_ID,imageId);
+        cv.put(IMAGE_URL,imageURL);
         cv.put(PLANT_NAME,plantName);
         database.insert(TABLE_NAME,null,cv);
     }
@@ -57,9 +57,9 @@ public class MyFavoriteDatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public void deleteData(int imageId){
+    public void deleteData(String imageURL){
         SQLiteDatabase database=getWritableDatabase();
-        database.delete(TABLE_NAME,"imageId = ?",new String[]{imageId+""});
+        database.delete(TABLE_NAME,"imageURL = ?",new String[]{imageURL+""});
     }
 
 }

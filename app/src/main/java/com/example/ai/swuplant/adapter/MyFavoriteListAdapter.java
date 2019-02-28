@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.bumptech.glide.Glide;
 import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.entity.BatchManageModel;
-import com.example.ai.swuplant.entity.PlantModel;
 import java.util.List;
 
 public class MyFavoriteListAdapter extends RecyclerView.Adapter<MyFavoriteListAdapter.ViewHolder>{
@@ -54,8 +54,8 @@ public class MyFavoriteListAdapter extends RecyclerView.Adapter<MyFavoriteListAd
     public void onBindViewHolder(ViewHolder holder, int position) {
         BatchManageModel model = plantModels.get(position);
 
-        holder.imageView.setImageResource(model.getPlantModel().getPlantImageId());
-        holder.textView.setText(model.getPlantModel().getPlantCNName());
+        Glide.with(context).load(model.getPlantModel().getPlantImageURL()).into(holder.imageView);
+        holder.textView.setText(model.getPlantModel().getPlantChineseName());
         // 根据isSelected来设置checkbox的显示状况
         if (flage) {
             holder.checkBox.setVisibility(View.VISIBLE);
@@ -79,7 +79,7 @@ public class MyFavoriteListAdapter extends RecyclerView.Adapter<MyFavoriteListAd
             @Override
             public void onClick(View v) {
                 if (onItemClickListener!=null){
-                    onItemClickListener.onItemClick(model.getPlantModel().getPlantCNName());
+                    onItemClickListener.onItemClick(model.getPlantModel().getPlantChineseName());
                 }
             }
         });

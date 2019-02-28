@@ -7,14 +7,16 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.base.BaseActivity;
+import com.example.ai.swuplant.data.PlantData;
 import com.example.ai.swuplant.database.MyFavoriteDatabaseHelper;
 import com.example.ai.swuplant.utils.Constant;
 import com.example.ai.swuplant.utils.ToastUtils;
 import java.util.ArrayList;
 import java.util.List;
-import static com.example.ai.swuplant.base.BaseApplication.plantModelList;
 
 public class PlantDetailActivity extends BaseActivity {
 
@@ -30,7 +32,7 @@ public class PlantDetailActivity extends BaseActivity {
 
     private List<String> plantNameList = new ArrayList<>();
 
-    private int imageId;
+    private String imageURL;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +77,7 @@ public class PlantDetailActivity extends BaseActivity {
 
                 if (drawable.equals(hollowHeart)){
                     if (!ishave){
-                        databaseHelper.insert(imageId,plantName);
+                        databaseHelper.insert(imageURL,plantName);
                         imgHeart.setImageResource(R.drawable.solid_heart);
                         ToastUtils.showToast(getApplicationContext(),"收藏成功");
                     }else {
@@ -83,7 +85,7 @@ public class PlantDetailActivity extends BaseActivity {
                     }
                 }else if (drawable.equals(solidHeart)){
                     if (ishave){
-                        databaseHelper.deleteData(imageId);
+                        databaseHelper.deleteData(imageURL);
                         imgHeart.setImageResource(R.drawable.hollow_heart);
                         ToastUtils.showToast(getApplicationContext(),"取消收藏");
                     }else {
@@ -114,15 +116,15 @@ public class PlantDetailActivity extends BaseActivity {
             plantName = bundle.getString(Constant.PLANT_NAME);
         }
 
-        for (int i = 0; i < plantModelList.size(); i++) {
-           if (plantModelList.get(i).getPlantCNName().equals(plantName)){
-               plantImageView.setImageResource(plantModelList.get(i).getPlantImageId());
-               plantCnNameTv.setText(plantModelList.get(i).getPlantCNName());
-               plantEnNameTv.setText(plantModelList.get(i).getPlantEnName());
-               plantPropertyTv.setText(plantModelList.get(i).getPlantProperty());
-               plantDescriptionTv.setText(plantModelList.get(i).getPlantDescription());
-               plantDistributionTv.setText(plantModelList.get(i).getPlantDistribution());
-               imageId = plantModelList.get(i).getPlantImageId();
+        for (int i = 0; i < PlantData.plantModelList.size(); i++) {
+           if (PlantData.plantModelList.get(i).getPlantChineseName().equals(plantName)){
+               Glide.with(this).load(PlantData.plantModelList.get(i).getPlantImageURL()).into(plantImageView);
+               plantCnNameTv.setText(PlantData.plantModelList.get(i).getPlantChineseName());
+               plantEnNameTv.setText(PlantData.plantModelList.get(i).getPlantEnglishName());
+               plantPropertyTv.setText(PlantData.plantModelList.get(i).getPlantProperty());
+               plantDescriptionTv.setText(PlantData.plantModelList.get(i).getPlantDescription());
+               plantDistributionTv.setText(PlantData.plantModelList.get(i).getPlantDistribution());
+               imageURL = PlantData.plantModelList.get(i).getPlantImageURL();
                break;
            }
         }

@@ -14,7 +14,6 @@
             android:id="@+id/plant_detail_image"
             android:layout_width="match_parent"
             android:layout_height="220dp"
-            android:src="@drawable/aizongzhu"
             android:scaleType="fitXY"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
@@ -72,9 +71,6 @@
             android:id="@+id/plant_detail_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="直立灌木，多分枝，茎圆柱状；无刺，无乳汁，无托叶；
-            偶数羽状复叶，有小叶3-4对；小叶对生，叶柄无明显特征，倒卵形或倒卵状长圆形，叶边缘全缘，叶网状脉。
-            总状花序，单果，荚果圆柱状。本种可作绿肥，绿篱及观赏植物。"
             app:layout_constraintTop_toBottomOf="@id/plant_detail_property"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -85,7 +81,6 @@
             android:id="@+id/plant_detail_distribution"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="主要分布于一教学楼附近。"
             app:layout_constraintTop_toBottomOf="@id/plant_detail_description"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

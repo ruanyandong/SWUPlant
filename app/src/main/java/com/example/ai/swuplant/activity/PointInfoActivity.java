@@ -9,13 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.adapter.PointInfoListAdapter;
 import com.example.ai.swuplant.base.BaseActivity;
+import com.example.ai.swuplant.data.PlantData;
 import com.example.ai.swuplant.entity.PlantModel;
 import com.example.ai.swuplant.entity.PointInfo;
 import com.example.ai.swuplant.utils.Constant;
 import com.example.ai.swuplant.utils.IntentUtils;
 import java.util.ArrayList;
 import java.util.List;
-import static com.example.ai.swuplant.base.BaseApplication.plantModelList;
 
 public class PointInfoActivity extends BaseActivity {
 
@@ -41,9 +41,9 @@ public class PointInfoActivity extends BaseActivity {
             List<String> plantNameList = pointInfo.getPlantNameList();
             for (int i = 0; i < plantNameList.size(); i++) {
 
-                for (int j = 0; j < plantModelList.size(); j++) {
-                    if (plantNameList.get(i).equals(plantModelList.get(j).getPlantCNName())){
-                        plantModels.add(plantModelList.get(j));
+                for (int j = 0; j < PlantData.plantModelList.size(); j++) {
+                    if (plantNameList.get(i).equals(PlantData.plantModelList.get(j).getPlantChineseName())){
+                        plantModels.add(PlantData.plantModelList.get(j));
                         break;
                     }
                 }

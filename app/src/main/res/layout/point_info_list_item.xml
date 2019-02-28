@@ -9,7 +9,6 @@
         android:id="@+id/point_image"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@drawable/aizongzhu"
         android:scaleType="centerCrop"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

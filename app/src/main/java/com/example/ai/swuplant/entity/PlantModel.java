@@ -2,68 +2,68 @@ package com.example.ai.swuplant.entity;
 
 public class PlantModel {
 
-    private int mPlantImageId;
-    private String mPlantCNName;
-    private String mPlantEnName;
-    private String mPlantProperty;
-    private String mPlantDescription;
-    private String mPlantDistribution;
+    private String plantChineseName;
+    private String plantEnglishName;
+    private String plantProperty;
+    private String plantDescription;
+    private String plantDistribution;
+    private String plantImageURL;
 
-    public PlantModel(int mPlantImageId, String mPlantCNName, String mPlantEnName, String mPlantProperty, String mPlantDescription, String mPlantDistribution) {
-        this.mPlantImageId = mPlantImageId;
-        this.mPlantCNName = mPlantCNName;
-        this.mPlantEnName = mPlantEnName;
-        this.mPlantProperty = mPlantProperty;
-        this.mPlantDescription = mPlantDescription;
-        this.mPlantDistribution = mPlantDistribution;
+    public PlantModel(String plantChineseName, String plantEnglishName, String plantProperty, String plantDescription, String plantDistribution, String plantImageURL) {
+        this.plantChineseName = plantChineseName;
+        this.plantEnglishName = plantEnglishName;
+        this.plantProperty = plantProperty;
+        this.plantDescription = plantDescription;
+        this.plantDistribution = plantDistribution;
+        this.plantImageURL = plantImageURL;
     }
 
-    public int getPlantImageId() {
-        return mPlantImageId;
+    public String getPlantChineseName() {
+        return plantChineseName;
     }
 
-    public void setPlantImageId(int mPlantImageId) {
-        this.mPlantImageId = mPlantImageId;
+    public void setPlantChineseName(String plantChineseName) {
+        this.plantChineseName = plantChineseName;
     }
 
-    public String getPlantCNName() {
-        return mPlantCNName;
+    public String getPlantEnglishName() {
+        return plantEnglishName;
     }
 
-    public void setPlantCNName(String mPlantCNName) {
-        this.mPlantCNName = mPlantCNName;
-    }
-
-    public String getPlantEnName() {
-        return mPlantEnName;
-    }
-
-    public void setPlantEnName(String mPlantEnName) {
-        this.mPlantEnName = mPlantEnName;
+    public void setPlantEnglishName(String plantEnglishName) {
+        this.plantEnglishName = plantEnglishName;
     }
 
     public String getPlantProperty() {
-        return mPlantProperty;
+        return plantProperty;
     }
 
-    public void setPlantProperty(String mPlantProperty) {
-        this.mPlantProperty = mPlantProperty;
+    public void setPlantProperty(String plantProperty) {
+        this.plantProperty = plantProperty;
     }
 
     public String getPlantDescription() {
-        return mPlantDescription;
+        return plantDescription;
     }
 
-    public void setPlantDescription(String mPlantDescription) {
-        this.mPlantDescription = mPlantDescription;
+    public void setPlantDescription(String plantDescription) {
+        this.plantDescription = plantDescription;
     }
 
     public String getPlantDistribution() {
-        return mPlantDistribution;
+        return plantDistribution;
     }
 
-    public void setPlantDistribution(String mPlantDistribution) {
-        this.mPlantDistribution = mPlantDistribution;
+    public void setPlantDistribution(String plantDistribution) {
+        this.plantDistribution = plantDistribution;
+    }
+
+    public String getPlantImageURL() {
+        return plantImageURL;
+    }
+
+    public void setPlantImageURL(String plantImageURL) {
+        this.plantImageURL = plantImageURL;
     }
 
 }

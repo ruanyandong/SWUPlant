@@ -10,11 +10,18 @@ import android.view.View;
 import android.widget.TextView;
 import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.base.BaseActivity;
+import com.example.ai.swuplant.data.PlantData;
+import com.example.ai.swuplant.entity.PlantModel;
+import com.example.ai.swuplant.entity.PointInfo;
 import com.example.ai.swuplant.fragment.CampusMapFragment;
 import com.example.ai.swuplant.fragment.FavoriteFragment;
 import com.example.ai.swuplant.fragment.FloraFragment;
 import com.example.ai.swuplant.fragment.FuzzyRetrievalFragment;
 import com.example.ai.swuplant.adapter.ViewPagerAdapter;
+import com.example.ai.swuplant.net.netframe.ApiServiceExecutor;
+import com.example.ai.swuplant.net.netframe.HttpCallBack;
+import com.example.customdialog.SweetAlertDialog;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,11 +40,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        initView();
         initData();
-
+        initView();
+        initFragment();
         initEvent();
+
+    }
+
+    private void initFragment() {
+        mListFragment.add(new CampusMapFragment());
+        mListFragment.add(new FuzzyRetrievalFragment());
+        mListFragment.add(new FloraFragment());
+        mListFragment.add(new FavoriteFragment());
+        mViewPagerAdapter.notifyDataSetChanged();
 
     }
 
@@ -72,12 +87,49 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     protected void initData() {
+        if (PlantData.plantModelList.size() == 0 || PlantData.plantInfoList.size() == 0){
+            PlantData.plantModelList.clear();
+            PlantData.plantInfoList.clear();
 
-        mListFragment.add(new CampusMapFragment());
-        mListFragment.add(new FuzzyRetrievalFragment());
-        mListFragment.add(new FloraFragment());
-        mListFragment.add(new FavoriteFragment());
-        mViewPagerAdapter.notifyDataSetChanged();
+            final SweetAlertDialog pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+                    .setTitleText("数据初始化中...");
+            pDialog.show();
+            pDialog.setCancelable(false);
+
+            /**
+             * 初始化数据
+             */
+            ApiServiceExecutor.getInstance().getPlantModel(new HttpCallBack() {
+                @Override
+                public void onSuccess(Object response) {
+                    if (response != null){
+                        List<PlantModel> list = (List<PlantModel>) response;
+                        PlantData.plantModelList = list;
+                        ApiServiceExecutor.getInstance().getplantPointInfo(new HttpCallBack() {
+                            @Override
+                            public void onSuccess(Object response) {
+                                if (response != null){
+                                    List<PointInfo> list = (List<PointInfo>) response;
+                                    PlantData.plantInfoList = list;
+                                    pDialog.dismissWithAnimation();
+
+                                }
+                            }
+                            @Override
+                            public void onFailure(Throwable e) {
+                                e.getMessage();
+                                e.printStackTrace();
+                            }
+                        });
+                    }
+                }
+                @Override
+                public void onFailure(Throwable e) {
+                    e.getMessage();
+                    e.printStackTrace();
+                }
+            });
+        }
 
     }
 

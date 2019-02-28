@@ -17,14 +17,13 @@ import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.activity.PlantDetailActivity;
 import com.example.ai.swuplant.adapter.MyFavoriteListAdapter;
 import com.example.ai.swuplant.base.BaseFragment;
+import com.example.ai.swuplant.data.PlantData;
 import com.example.ai.swuplant.database.MyFavoriteDatabaseHelper;
 import com.example.ai.swuplant.entity.BatchManageModel;
-import com.example.ai.swuplant.entity.PlantModel;
 import com.example.ai.swuplant.utils.Constant;
 import com.example.ai.swuplant.utils.IntentUtils;
 import java.util.ArrayList;
 import java.util.List;
-import static com.example.ai.swuplant.base.BaseApplication.plantModelList;
 
 public class FavoriteFragment extends BaseFragment {
 
@@ -74,9 +73,9 @@ public class FavoriteFragment extends BaseFragment {
         plantDatas.clear();
         for (int i = 0; i < plantNameList.size(); i++) {
 
-            for (int j = 0; j < plantModelList.size(); j++) {
-                if (plantNameList.get(i).equals(plantModelList.get(j).getPlantCNName())){
-                    plantDatas.add(new BatchManageModel(plantModelList.get(j)));
+            for (int j = 0; j < PlantData.plantModelList.size(); j++) {
+                if (plantNameList.get(i).equals(PlantData.plantModelList.get(j).getPlantChineseName())){
+                    plantDatas.add(new BatchManageModel(PlantData.plantModelList.get(j)));
                     break;
                 }
             }
@@ -142,7 +141,7 @@ public class FavoriteFragment extends BaseFragment {
             if (mAdapter.flage){
                 for (int i = 0; i < plantDatas.size(); i++) {
                     if (plantDatas.get(i).getCheck()){
-                        databaseHelper.deleteData(plantDatas.get(i).getPlantModel().getPlantImageId());
+                        databaseHelper.deleteData(plantDatas.get(i).getPlantModel().getPlantImageURL());
                         //plantDatas.remove(i);//TODO:有问题
                         Log.d("TAG", "initEvent: "+i);
                     }

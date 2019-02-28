@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.entity.PlantModel;
 
@@ -49,14 +50,14 @@ public class AngiospermSearchListAdapter extends RecyclerView.Adapter<Angiosperm
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         PlantModel model = plantModels.get(position);
-        holder.imageView.setImageResource(model.getPlantImageId());
-        holder.textView.setText(model.getPlantCNName());
+        Glide.with(context).load(model.getPlantImageURL()).into(holder.imageView);
+        holder.textView.setText(model.getPlantChineseName());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (onItemClickListener!=null){
-                    onItemClickListener.onItemClick(model.getPlantCNName());
+                    onItemClickListener.onItemClick(model.getPlantChineseName());
                 }
             }
         });

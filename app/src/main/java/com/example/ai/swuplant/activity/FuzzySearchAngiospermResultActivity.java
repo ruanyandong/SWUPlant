@@ -8,12 +8,12 @@ import android.support.v7.widget.RecyclerView;
 import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.adapter.AngiospermSearchListAdapter;
 import com.example.ai.swuplant.base.BaseActivity;
+import com.example.ai.swuplant.data.PlantData;
 import com.example.ai.swuplant.entity.PlantModel;
 import com.example.ai.swuplant.utils.Constant;
 import com.example.ai.swuplant.utils.IntentUtils;
 import java.util.ArrayList;
 import java.util.List;
-import static com.example.ai.swuplant.base.BaseApplication.plantModelList;
 
 public class FuzzySearchAngiospermResultActivity extends BaseActivity {
 
@@ -59,11 +59,11 @@ public class FuzzySearchAngiospermResultActivity extends BaseActivity {
             }
             int length = specificFeature.size();
 
-            for (int i = 0; i < plantModelList.size(); i++) {
-               String description = plantModelList.get(i).getPlantDescription();
+            for (int i = 0; i < PlantData.plantModelList.size(); i++) {
+               String description = PlantData.plantModelList.get(i).getPlantDescription();
 
                if (length == 0){
-                   plantModels.add(plantModelList.get(i));
+                   plantModels.add(PlantData.plantModelList.get(i));
                }else {
                    boolean contain = true;
                    for (int j = 0; j < length; j++) {
@@ -73,7 +73,7 @@ public class FuzzySearchAngiospermResultActivity extends BaseActivity {
                        }
                    }
                    if (contain){
-                       plantModels.add(plantModelList.get(i));
+                       plantModels.add(PlantData.plantModelList.get(i));
                    }
                 }
 

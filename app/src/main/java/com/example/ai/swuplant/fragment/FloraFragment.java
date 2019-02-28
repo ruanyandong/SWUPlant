@@ -1,9 +1,6 @@
 package com.example.ai.swuplant.fragment;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,11 +17,13 @@ import com.example.ai.swuplant.adapter.SortAdapter;
 import com.example.ai.swuplant.base.BaseFragment;
 import com.example.ai.swuplant.customcomponent.ClearEditText;
 import com.example.ai.swuplant.customcomponent.SideBar;
+import com.example.ai.swuplant.data.PlantData;
 import com.example.ai.swuplant.entity.SortModel;
 import com.example.ai.swuplant.utils.Constant;
 import com.example.ai.swuplant.utils.IntentUtils;
 import com.example.ai.swuplant.utils.PinyinComparator;
 import com.example.ai.swuplant.utils.PinyinUtils;
+import com.orhanobut.logger.Logger;
 
 
 import java.util.ArrayList;
@@ -81,7 +80,14 @@ public class FloraFragment extends BaseFragment implements SortAdapter.OnItemCli
         });
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        SourceDateList = filledData(getResources().getStringArray(R.array.plantCN));
+
+        Logger.d("植物列表尺寸："+PlantData.plantModelList.size());
+        String[] nameArray = new String[PlantData.plantModelList.size()];
+        for (int i = 0; i < PlantData.plantModelList.size(); i++) {
+            nameArray[i] = PlantData.plantModelList.get(i).getPlantChineseName();
+        }
+
+        SourceDateList = filledData(nameArray);
 
         // 根据a-z进行排序源数据
         Collections.sort(SourceDateList, pinyinComparator);

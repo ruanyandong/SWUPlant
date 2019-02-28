@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -13,12 +12,10 @@ import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
@@ -43,6 +40,7 @@ import com.example.ai.swuplant.activity.PlantDetailActivity;
 import com.example.ai.swuplant.activity.PointInfoActivity;
 import com.example.ai.swuplant.base.BaseFragment;
 import com.example.ai.swuplant.customcomponent.ClearEditText;
+import com.example.ai.swuplant.data.PlantData;
 import com.example.ai.swuplant.entity.PointInfo;
 import com.example.ai.swuplant.utils.Constant;
 import com.example.ai.swuplant.utils.IntentUtils;
@@ -51,9 +49,6 @@ import com.example.ai.swuplant.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import static com.example.ai.swuplant.base.BaseApplication.plantModelList;
-import static com.example.ai.swuplant.base.BaseApplication.pointInfoList;
-
 public class CampusMapFragment extends BaseFragment {
 
     private View view=null;
@@ -106,6 +101,7 @@ public class CampusMapFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initSDKClient();
+
     }
 
     private void initSDKClient(){
@@ -124,9 +120,16 @@ public class CampusMapFragment extends BaseFragment {
 
         view=inflater.inflate(R.layout.fragment_compus_map, container, false);
         initView(view);
-        initEvent();
+
         return view;
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initEvent();
+    }
+
 
     @Override
     public void onResume() {
@@ -141,7 +144,7 @@ public class CampusMapFragment extends BaseFragment {
         }
 
         locationClient.registerLocationListener(myLocationListener);
-        addOverlays(pointInfoList);
+        addOverlays(PlantData.plantInfoList);
         setOnMarkerListener();
         setOnMapClickListener();
 
@@ -368,8 +371,8 @@ public class CampusMapFragment extends BaseFragment {
                 String plantName = s.toString();
                 boolean isExit = false;
 
-                for (int i = 0; i < plantModelList.size(); i++) {
-                    if (plantModelList.get(i).getPlantCNName().equals(plantName)){
+                for (int i = 0; i < PlantData.plantModelList.size(); i++) {
+                    if (PlantData.plantModelList.get(i).getPlantChineseName().equals(plantName)){
                         isExit = true;
                         Bundle bundle = new Bundle();
                         bundle.putString(Constant.PLANT_NAME,plantName);
