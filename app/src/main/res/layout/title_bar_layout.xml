@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.example.ai.swuplant.customcomponent.TitleBar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:background="@color/blue_btn_bg_color"
+    android:fitsSystemWindows="true">
+
+    <ImageView
+        android:id="@+id/titlebar_back"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:padding="10dp"
+        android:src="@drawable/close"
+        android:layout_alignParentLeft="true"/>
+
+    <TextView
+        android:id="@+id/titlebar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:text="======="
+        android:textSize="22sp"
+        android:gravity="center"
+        android:layout_centerVertical="true"/>
+
+
+    <TextView
+        android:id="@+id/titlebar_rtbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="15dp"
+        android:textSize="22sp"
+        android:gravity="center"
+        android:text="保存"
+        />
+
+
+</com.example.ai.swuplant.customcomponent.TitleBar>

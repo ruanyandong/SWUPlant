@@ -6,8 +6,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+
 import com.example.ai.swuplant.R;
-import com.example.ai.swuplant.adapter.GymnospermListAdapter;
+import com.example.ai.swuplant.adapter.PlantListAdapter;
 import com.example.ai.swuplant.base.BaseActivity;
 import com.example.ai.swuplant.data.PlantData;
 import com.example.ai.swuplant.entity.PlantModel;
@@ -29,7 +31,7 @@ public class GymnospermActivity extends BaseActivity {
 
     private SmartRefreshLayout smartRefreshLayout;
     private RecyclerView recyclerView;
-    private GymnospermListAdapter mAdapter;
+    private PlantListAdapter mAdapter;
     private List<PlantModel> plantModels = new ArrayList<>();
 
     // 分页加载
@@ -44,6 +46,11 @@ public class GymnospermActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setTitleBarTitle("裸子植物");
+        setTitleRTBtnVisiable(View.INVISIBLE);
+        setCenterClick(false);
+
         initView();
         initData();
 
@@ -52,12 +59,12 @@ public class GymnospermActivity extends BaseActivity {
     @Override
     protected void initView() {
         smartRefreshLayout = findViewById(R.id.smartRefreshLayout);
-        recyclerView = findViewById(R.id.angiospermList);
+        recyclerView = findViewById(R.id.plantList);
         recyclerView.setLayoutManager(new LinearLayoutManager(GymnospermActivity.this));
         recyclerView.addItemDecoration(new DividerItemDecoration(GymnospermActivity.this,DividerItemDecoration.VERTICAL));
 
-        mAdapter = new GymnospermListAdapter(GymnospermActivity.this,dataSource);
-        mAdapter.setOnItemClickListener(new GymnospermListAdapter.OnItemClickListener() {
+        mAdapter = new PlantListAdapter(GymnospermActivity.this,dataSource);
+        mAdapter.setOnItemClickListener(new PlantListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(String plantName) {
                 Bundle bundle = new Bundle();
@@ -187,7 +194,7 @@ public class GymnospermActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_gymnosperm;
+        return R.layout.activity_plant_list;
     }
 
 }

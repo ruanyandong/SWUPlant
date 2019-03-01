@@ -7,8 +7,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+
 import com.example.ai.swuplant.R;
-import com.example.ai.swuplant.adapter.PointInfoListAdapter;
+import com.example.ai.swuplant.adapter.PlantListAdapter;
 import com.example.ai.swuplant.base.BaseActivity;
 import com.example.ai.swuplant.data.PlantData;
 import com.example.ai.swuplant.entity.PlantModel;
@@ -28,7 +30,7 @@ public class PointInfoActivity extends BaseActivity {
 
     private SmartRefreshLayout smartRefreshLayout;
     private RecyclerView recyclerView ;
-    private PointInfoListAdapter mAdapter;
+    private PlantListAdapter mAdapter;
     private List<PlantModel> plantModels = new ArrayList<>();
     private PointInfo pointInfo;
 
@@ -44,6 +46,10 @@ public class PointInfoActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitleBarTitle("点位植物种类");
+        setTitleRTBtnVisiable(View.INVISIBLE);
+        setCenterClick(false);
+
         initData();
         initView();
     }
@@ -80,12 +86,12 @@ public class PointInfoActivity extends BaseActivity {
     @Override
     protected void initView() {
         smartRefreshLayout = findViewById(R.id.smartRefreshLayout);
-        recyclerView = findViewById(R.id.pointInfoPlantList);
-        mAdapter = new PointInfoListAdapter(this,dataSource);
+        recyclerView = findViewById(R.id.plantList);
+        mAdapter = new PlantListAdapter(this,dataSource);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener(new PointInfoListAdapter.OnItemClickListener() {
+        mAdapter.setOnItemClickListener(new PlantListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(String plantName) {
                 Bundle bundle = new Bundle();
@@ -176,7 +182,7 @@ public class PointInfoActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_pointinfo;
+        return R.layout.activity_plant_list;
     }
 
 

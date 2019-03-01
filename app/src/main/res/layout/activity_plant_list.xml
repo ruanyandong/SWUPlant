@@ -6,27 +6,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/gymnospermText"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="@string/gymnosperm"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textColor="@android:color/black"
-        android:gravity="center"
-        android:layout_margin="5dp" />
-
+    <include
+        android:id="@+id/base_titlebar"
+        layout="@layout/title_bar_layout" />
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/smartRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/angiospermList"
+            android:id="@+id/plantList"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+
 
 </LinearLayout>

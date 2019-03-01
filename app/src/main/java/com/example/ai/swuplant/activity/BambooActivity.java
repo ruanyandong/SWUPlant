@@ -6,8 +6,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+
 import com.example.ai.swuplant.R;
-import com.example.ai.swuplant.adapter.BambooListAdapter;
+import com.example.ai.swuplant.adapter.PlantListAdapter;
 import com.example.ai.swuplant.base.BaseActivity;
 import com.example.ai.swuplant.data.PlantData;
 import com.example.ai.swuplant.entity.PlantModel;
@@ -28,7 +30,7 @@ public class BambooActivity extends BaseActivity {
 
     private SmartRefreshLayout smartRefreshLayout;
     private RecyclerView recyclerView;
-    private BambooListAdapter mAdapter;
+    private PlantListAdapter mAdapter;
     private List<PlantModel> plantModels = new ArrayList<>();
 
     // 分页加载
@@ -44,6 +46,10 @@ public class BambooActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitleBarTitle("竹类植物");
+        setTitleRTBtnVisiable(View.INVISIBLE);
+        setCenterClick(false);
+
         initView();
         initData();
 
@@ -52,12 +58,12 @@ public class BambooActivity extends BaseActivity {
     @Override
     protected void initView() {
         smartRefreshLayout = findViewById(R.id.smartRefreshLayout);
-        recyclerView = findViewById(R.id.bambooList);
+        recyclerView = findViewById(R.id.plantList);
         recyclerView.setLayoutManager(new LinearLayoutManager(BambooActivity.this));
         recyclerView.addItemDecoration(new DividerItemDecoration(BambooActivity.this,DividerItemDecoration.VERTICAL));
 
-        mAdapter = new BambooListAdapter(BambooActivity.this,dataSource);
-        mAdapter.setOnItemClickListener(new BambooListAdapter.OnItemClickListener() {
+        mAdapter = new PlantListAdapter(BambooActivity.this,dataSource);
+        mAdapter.setOnItemClickListener(new PlantListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(String plantName) {
                 Bundle bundle = new Bundle();
@@ -187,7 +193,7 @@ public class BambooActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_bamboo;
+        return R.layout.activity_plant_list;
     }
 
 

@@ -14,7 +14,7 @@ import com.example.ai.swuplant.entity.PlantModel;
 
 import java.util.List;
 
-public class FernListAdapter extends RecyclerView.Adapter<FernListAdapter.ViewHolder>{
+public class PlantListAdapter extends RecyclerView.Adapter<PlantListAdapter.ViewHolder>{
 
 
     private List<PlantModel> plantModels;
@@ -22,7 +22,7 @@ public class FernListAdapter extends RecyclerView.Adapter<FernListAdapter.ViewHo
     private LayoutInflater inflater;
     private OnItemClickListener onItemClickListener;
 
-    public FernListAdapter(Context context, List<PlantModel> list){
+    public PlantListAdapter(Context context, List<PlantModel> list){
         this.context = context;
         this.plantModels = list;
         inflater = LayoutInflater.from(this.context);
@@ -34,15 +34,15 @@ public class FernListAdapter extends RecyclerView.Adapter<FernListAdapter.ViewHo
 
         public ViewHolder(View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.fern_image);
-            textView = itemView.findViewById(R.id.fern_name);
+            imageView = itemView.findViewById(R.id.plant_image);
+            textView = itemView.findViewById(R.id.plant_name);
         }
 
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.fern_list_item,parent,false);
+        View view = inflater.inflate(R.layout.palnt_list_item,parent,false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }

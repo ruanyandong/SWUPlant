@@ -6,9 +6,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.example.ai.swuplant.R;
-import com.example.ai.swuplant.adapter.FernListAdapter;
+import com.example.ai.swuplant.adapter.PlantListAdapter;
 import com.example.ai.swuplant.base.BaseActivity;
 import com.example.ai.swuplant.data.PlantData;
 import com.example.ai.swuplant.entity.PlantModel;
@@ -30,7 +31,7 @@ public class FernActivity extends BaseActivity {
 
     private SmartRefreshLayout smartRefreshLayout;
     private RecyclerView recyclerView;
-    private FernListAdapter mAdapter;
+    private PlantListAdapter mAdapter;
     private List<PlantModel> plantModels = new ArrayList<>();
 
     // 分页加载
@@ -45,6 +46,10 @@ public class FernActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitleBarTitle("蕨类植物");
+        setTitleRTBtnVisiable(View.INVISIBLE);
+        setCenterClick(false);
+
         initView();
         initData();
 
@@ -59,12 +64,12 @@ public class FernActivity extends BaseActivity {
     @Override
     protected void initView() {
         smartRefreshLayout = findViewById(R.id.smartRefreshLayout);
-        recyclerView = findViewById(R.id.fernList);
+        recyclerView = findViewById(R.id.plantList);
         recyclerView.setLayoutManager(new LinearLayoutManager(FernActivity.this));
         recyclerView.addItemDecoration(new DividerItemDecoration(FernActivity.this,DividerItemDecoration.VERTICAL));
 
-        mAdapter = new FernListAdapter(FernActivity.this,dataSource);
-        mAdapter.setOnItemClickListener(new FernListAdapter.OnItemClickListener() {
+        mAdapter = new PlantListAdapter(FernActivity.this,dataSource);
+        mAdapter.setOnItemClickListener(new PlantListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(String plantName) {
                 Bundle bundle = new Bundle();
@@ -191,7 +196,7 @@ public class FernActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_fern;
+        return R.layout.activity_plant_list;
     }
 
 

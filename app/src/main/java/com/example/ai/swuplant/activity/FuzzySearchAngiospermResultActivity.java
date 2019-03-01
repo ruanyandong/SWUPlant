@@ -5,8 +5,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+
 import com.example.ai.swuplant.R;
-import com.example.ai.swuplant.adapter.AngiospermSearchListAdapter;
+import com.example.ai.swuplant.adapter.PlantListAdapter;
 import com.example.ai.swuplant.base.BaseActivity;
 import com.example.ai.swuplant.data.PlantData;
 import com.example.ai.swuplant.entity.PlantModel;
@@ -18,12 +20,16 @@ import java.util.List;
 public class FuzzySearchAngiospermResultActivity extends BaseActivity {
 
     private RecyclerView recyclerView;
-    private AngiospermSearchListAdapter mAdapter;
+    private PlantListAdapter mAdapter;
     private List<PlantModel> plantModels = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitleBarTitle("被子植物模糊搜索结果");
+        setTitleRTBtnVisiable(View.INVISIBLE);
+        setCenterClick(false);
+
         initData();
         initView();
     }
@@ -84,11 +90,11 @@ public class FuzzySearchAngiospermResultActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        recyclerView = findViewById(R.id.angiospermList);
+        recyclerView = findViewById(R.id.plantList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
-        mAdapter = new AngiospermSearchListAdapter(this,plantModels);
-        mAdapter.setOnItemClickListener(new AngiospermSearchListAdapter.OnItemClickListener() {
+        mAdapter = new PlantListAdapter(this,plantModels);
+        mAdapter.setOnItemClickListener(new PlantListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(String plantName) {
                 Bundle bundle = new Bundle();
@@ -101,7 +107,7 @@ public class FuzzySearchAngiospermResultActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_fuzzy_search_angiosperm_result;
+        return R.layout.activity_plant_list;
     }
 
 

@@ -5,13 +5,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/colorWhite">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:text="@string/help_menu"
-        android:gravity="center"
-        android:textSize="22sp"
-        android:textColor="@android:color/black"/>
+
+
+    <include
+        android:id="@+id/base_titlebar"
+        layout="@layout/title_bar_layout" />
+
     <WebView
         android:id="@+id/helpWebView"
         android:layout_width="match_parent"

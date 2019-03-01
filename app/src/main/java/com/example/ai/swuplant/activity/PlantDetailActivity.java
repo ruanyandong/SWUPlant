@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.base.BaseActivity;
