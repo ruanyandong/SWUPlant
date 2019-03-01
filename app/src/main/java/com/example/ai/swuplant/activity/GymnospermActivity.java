@@ -1,6 +1,7 @@
 package com.example.ai.swuplant.activity;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,15 +16,30 @@ import com.example.ai.swuplant.net.netframe.HttpCallBack;
 import com.example.ai.swuplant.utils.Constant;
 import com.example.ai.swuplant.utils.IntentUtils;
 import com.example.customdialog.SweetAlertDialog;
+import com.orhanobut.logger.Logger;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GymnospermActivity extends BaseActivity {
 
+    private SmartRefreshLayout smartRefreshLayout;
     private RecyclerView recyclerView;
     private GymnospermListAdapter mAdapter;
     private List<PlantModel> plantModels = new ArrayList<>();
+
+    // 分页加载
+    // RecyclerView的数据源
+    private List<PlantModel> dataSource = new ArrayList<>();
+    private int totalDataNumber;
+    private int pageSize = 6;
+    private int totalPageNumber;
+    private int currentPage = 1;
+    private boolean isExactDivision;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,7 +51,21 @@ public class GymnospermActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        smartRefreshLayout = findViewById(R.id.smartRefreshLayout);
         recyclerView = findViewById(R.id.angiospermList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(GymnospermActivity.this));
+        recyclerView.addItemDecoration(new DividerItemDecoration(GymnospermActivity.this,DividerItemDecoration.VERTICAL));
+
+        mAdapter = new GymnospermListAdapter(GymnospermActivity.this,dataSource);
+        mAdapter.setOnItemClickListener(new GymnospermListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(String plantName) {
+                Bundle bundle = new Bundle();
+                bundle.putString(Constant.PLANT_NAME,plantName);
+                IntentUtils.showActivity(GymnospermActivity.this, PlantDetailActivity.class,bundle);
+            }
+        });
+        recyclerView.setAdapter(mAdapter);
 
     }
 
@@ -62,18 +92,32 @@ public class GymnospermActivity extends BaseActivity {
                     }
                     pDialog.dismissWithAnimation();
 
-                    mAdapter = new GymnospermListAdapter(GymnospermActivity.this,plantModels);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(GymnospermActivity.this));
-                    recyclerView.addItemDecoration(new DividerItemDecoration(GymnospermActivity.this,DividerItemDecoration.VERTICAL));
-                    mAdapter.setOnItemClickListener(new GymnospermListAdapter.OnItemClickListener() {
+                    // 分页参数
+                    initDivPageParameters();
+
+                    smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
                         @Override
-                        public void onItemClick(String plantName) {
-                            Bundle bundle = new Bundle();
-                            bundle.putString(Constant.PLANT_NAME,plantName);
-                            IntentUtils.showActivity(GymnospermActivity.this, PlantDetailActivity.class,bundle);
+                        public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                            dataSource.clear();
+                            mAdapter.notifyDataSetChanged();
+                            currentPage = 1;
+                            initDivPageParameters();
+                            mAdapter.notifyDataSetChanged();
+                            refreshLayout.finishRefresh();
                         }
                     });
-                    recyclerView.setAdapter(mAdapter);
+
+                    smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+                        @Override
+                        public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                            loadMoreData();
+                            refreshLayout.finishLoadMore();
+                        }
+                    });
+
+                    smartRefreshLayout.setEnableLoadMore(true);
+                    //smartRefreshLayout.autoRefresh();
+
                 }
             }
 
@@ -86,6 +130,61 @@ public class GymnospermActivity extends BaseActivity {
 
 
     }
+
+    private void loadMoreData() {
+        if (currentPage < totalPageNumber) {
+            ++currentPage;
+            if (isExactDivision) {
+                for (int i = (currentPage - 1) * pageSize; i < (currentPage - 1) * pageSize + 6; i++) {
+                    dataSource.add(plantModels.get(i));
+                }
+                Logger.d("dataSource size is" + dataSource.size());
+                mAdapter.notifyDataSetChanged();
+            } else {
+                if (currentPage < totalPageNumber) {
+                    for (int i = (currentPage - 1) * pageSize; i < (currentPage - 1) * pageSize + 6; i++) {
+                        dataSource.add(plantModels.get(i));
+                    }
+                    mAdapter.notifyDataSetChanged();
+                    Logger.d("dataSource size is" + dataSource.size());
+                } else if (currentPage == totalPageNumber) {
+                    for (int i = (currentPage - 1) * pageSize; i < (currentPage - 1) * pageSize + totalDataNumber % pageSize; i++) {
+                        dataSource.add(plantModels.get(i));
+                    }
+                    mAdapter.notifyDataSetChanged();
+                    Logger.d("dataSource size is" + dataSource.size());
+                }
+            }
+        }
+    }
+
+    private void initDivPageParameters() {
+        totalDataNumber = plantModels.size();
+        Logger.d("totalDataNumber size is" + totalDataNumber);
+        if (totalDataNumber <= pageSize){
+            totalPageNumber = 1;
+            for (int i = 0; i < plantModels.size(); i++) {
+                dataSource.add(plantModels.get(i));
+            }
+            mAdapter.notifyDataSetChanged();
+            Logger.d("dataSource size is" + dataSource.size());
+        }else {
+            if (totalDataNumber%pageSize == 0){
+                totalPageNumber = totalDataNumber/pageSize;
+                isExactDivision = true;
+            }else {
+                totalPageNumber = totalDataNumber/pageSize+1;
+                isExactDivision = false;
+            }
+
+            for (int i = 0;i<6;i++){
+                dataSource.add(plantModels.get(i));
+            }
+            Logger.d("dataSource size is" + dataSource.size());
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_gymnosperm;
