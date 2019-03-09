@@ -46,7 +46,7 @@ public class BambooActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitleBarTitle("竹类植物");
+        setTitleBarTitle(this.getResources().getString(R.string.bamboo));
         setTitleRTBtnVisiable(View.INVISIBLE);
         setCenterClick(false);
 

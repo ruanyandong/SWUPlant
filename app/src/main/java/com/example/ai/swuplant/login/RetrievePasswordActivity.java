@@ -4,7 +4,6 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
@@ -20,15 +19,12 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import com.example.ai.swuplant.R;
-import com.example.ai.swuplant.activity.AboutUsActivity;
-import com.example.ai.swuplant.activity.ContactServiceActivity;
-import com.example.ai.swuplant.activity.MainActivity;
-import com.example.ai.swuplant.data.UserData;
 import com.example.ai.swuplant.login.component.DrawableTextView;
 import com.example.ai.swuplant.login.listener.KeyboardWatcher;
-import com.example.ai.swuplant.net.bean.LoginBackResult;
+import com.example.ai.swuplant.net.bean.RegisterBackResult;
+import com.example.ai.swuplant.net.bean.UpdatePasswordBackResult;
+import com.example.ai.swuplant.net.netframe.ApiService;
 import com.example.ai.swuplant.net.netframe.ApiServiceExecutor;
 import com.example.ai.swuplant.net.netframe.HttpCallBack;
 import com.example.ai.swuplant.net.utils.netUtil;
@@ -36,21 +32,18 @@ import com.example.ai.swuplant.utils.ToastUtils;
 import com.example.customdialog.SweetAlertDialog;
 import com.orhanobut.logger.Logger;
 
-public class LoginActivity extends FragmentActivity implements View.OnClickListener, KeyboardWatcher.SoftKeyboardStateListener {
+public class RetrievePasswordActivity extends FragmentActivity implements View.OnClickListener, KeyboardWatcher.SoftKeyboardStateListener {
 
     private DrawableTextView logo;
     private EditText et_mobile;
-    private EditText et_password;
+    private EditText et_new_password;
+    private EditText et_affirm_new_password;
     private ImageView iv_clean_phone;
-    private ImageView clean_password;
-    private ImageView iv_show_pwd;
-
-    private Button btn_login;
-    private TextView register_user;
-    private TextView forget_password;
-
-    private TextView contact_service;
-    private TextView about_us;
+    private ImageView clean_new_password;
+    private ImageView iv_show_new_pwd;
+    private ImageView clean_affirm_new_password;
+    private ImageView iv_show_affirm_new_password;
+    private Button btn_submit;
 
     private int screenHeight = 0;//屏幕高度
     private float scale = 0.8f; //logo缩放比例
@@ -62,45 +55,42 @@ public class LoginActivity extends FragmentActivity implements View.OnClickListe
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_retrieve_password);
         initView();
         initListener();
 
         keyboardWatcher = new KeyboardWatcher(findViewById(Window.ID_ANDROID_CONTENT));
         keyboardWatcher.addSoftKeyboardStateListener(this);
-
     }
+
+
+
     private void initView() {
         logo = (DrawableTextView) findViewById(R.id.logo);
         et_mobile = (EditText) findViewById(R.id.et_mobile);
-        et_password = (EditText) findViewById(R.id.et_password);
+        et_new_password = (EditText) findViewById(R.id.et_new_password);
+        et_affirm_new_password = (EditText) findViewById(R.id.et_affirm_new_password);
         iv_clean_phone = (ImageView) findViewById(R.id.iv_clean_phone);
-        clean_password = (ImageView) findViewById(R.id.clean_password);
-        iv_show_pwd = (ImageView) findViewById(R.id.iv_show_pwd);
-
-        btn_login = (Button) findViewById(R.id.btn_login);
-        register_user = (TextView) findViewById(R.id.regist);
-        forget_password = (TextView) findViewById(R.id.forget_password);
-
-        contact_service = findViewById(R.id.contact_service);
-        about_us = findViewById(R.id.about_us);
-
+        clean_new_password = (ImageView) findViewById(R.id.clean_new_password);
+        iv_show_new_pwd = (ImageView) findViewById(R.id.iv_show_new_pwd);
+        clean_affirm_new_password = (ImageView) findViewById(R.id.clean_affirm_new_password);
+        iv_show_affirm_new_password = (ImageView) findViewById(R.id.iv_show_affirm_new_pwd);
+        btn_submit = (Button) findViewById(R.id.btn_submit);
         service = findViewById(R.id.service);
         body = findViewById(R.id.body);
         screenHeight = this.getResources().getDisplayMetrics().heightPixels; //获取屏幕高度
         root = findViewById(R.id.root);
         findViewById(R.id.close).setOnClickListener(this);
+
     }
 
     private void initListener() {
         iv_clean_phone.setOnClickListener(this);
-        clean_password.setOnClickListener(this);
-        iv_show_pwd.setOnClickListener(this);
-        register_user.setOnClickListener(this);
-        btn_login.setOnClickListener(this);
-        forget_password.setOnClickListener(this);
-        contact_service.setOnClickListener(this);
-        about_us.setOnClickListener(this);
+        clean_new_password.setOnClickListener(this);
+        iv_show_new_pwd.setOnClickListener(this);
+        clean_affirm_new_password.setOnClickListener(this);
+        iv_show_affirm_new_password.setOnClickListener(this);
+        btn_submit.setOnClickListener(this);
 
         et_mobile.addTextChangedListener(new TextWatcher() {
             @Override
@@ -122,34 +112,61 @@ public class LoginActivity extends FragmentActivity implements View.OnClickListe
                 }
             }
         });
-        et_password.addTextChangedListener(new TextWatcher() {
+        et_new_password.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
-
             @Override
             public void afterTextChanged(Editable s) {
-                if (!TextUtils.isEmpty(s) && clean_password.getVisibility() == View.GONE) {
-                    clean_password.setVisibility(View.VISIBLE);
+                if (!TextUtils.isEmpty(s) && clean_new_password.getVisibility() == View.GONE) {
+                    clean_new_password.setVisibility(View.VISIBLE);
                 } else if (TextUtils.isEmpty(s)) {
-                    clean_password.setVisibility(View.GONE);
+                    clean_new_password.setVisibility(View.GONE);
                 }
                 if (s.toString().isEmpty())
                     return;
                 if (!s.toString().matches("[A-Za-z0-9]+")) {
                     String temp = s.toString();
-                    ToastUtils.showToast(LoginActivity.this,getResources().getString(R.string.please_input_limit_pwd));
+                    ToastUtils.showToast(RetrievePasswordActivity.this,getResources().getString(R.string.please_input_limit_pwd));
                     s.delete(temp.length() - 1, temp.length());
-                    et_password.setSelection(s.length());
+                    et_new_password.setSelection(s.length());
                 }
             }
         });
+        et_affirm_new_password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!TextUtils.isEmpty(s) && clean_affirm_new_password.getVisibility() == View.GONE) {
+                    clean_affirm_new_password.setVisibility(View.VISIBLE);
+                } else if (TextUtils.isEmpty(s)) {
+                    clean_affirm_new_password.setVisibility(View.GONE);
+                }
+                if (s.toString().isEmpty())
+                    return;
+                if (!s.toString().matches("[A-Za-z0-9]+")) {
+                    String temp = s.toString();
+                    ToastUtils.showToast(RetrievePasswordActivity.this,getResources().getString(R.string.please_input_limit_pwd));
+                    s.delete(temp.length() - 1, temp.length());
+                    et_affirm_new_password.setSelection(s.length());
+                }
+            }
+        });
+
     }
 
     /**
@@ -194,8 +211,11 @@ public class LoginActivity extends FragmentActivity implements View.OnClickListe
         mAnimatorSet.start();
 
     }
-    private boolean flag = false;
+    private boolean flag_new_password = false;
+    private boolean flag_affirm_new_password = false;
+
     private SweetAlertDialog loadingDialog = null;
+
     @Override
     public void onClick(View v) {
         int id = v.getId();
@@ -203,42 +223,62 @@ public class LoginActivity extends FragmentActivity implements View.OnClickListe
             case R.id.iv_clean_phone:
                 et_mobile.setText("");
                 break;
-            case R.id.clean_password:
-                et_password.setText("");
+            case R.id.clean_new_password:
+                et_new_password.setText("");
                 break;
             case R.id.close:
                 finish();
+                overridePendingTransition(0,R.anim.activity_slide_out_down);
                 break;
-            case R.id.iv_show_pwd:
-                if(flag == true){
-                    et_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                    iv_show_pwd.setImageResource(R.drawable.pass_gone);
-                    flag = false;
+            case R.id.iv_show_new_pwd:
+                if(flag_new_password == true){
+                    et_new_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    iv_show_new_pwd.setImageResource(R.drawable.pass_gone);
+                    flag_new_password = false;
                 }else{
-                    et_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                    iv_show_pwd.setImageResource(R.drawable.pass_visuable);
-                    flag = true;
+                    et_new_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    iv_show_new_pwd.setImageResource(R.drawable.pass_visuable);
+                    flag_new_password = true;
                 }
-                String pwd = et_password.getText().toString();
+                String pwd = et_new_password.getText().toString();
                 if (!TextUtils.isEmpty(pwd))
-                    et_password.setSelection(pwd.length());
+                    et_new_password.setSelection(pwd.length());
                 break;
-            case R.id.btn_login:
+            case R.id.clean_affirm_new_password:
+                et_affirm_new_password.setText("");
+                break;
+            case R.id.iv_show_affirm_new_pwd:
+                if(flag_affirm_new_password == true){
+                    et_affirm_new_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    iv_show_affirm_new_password.setImageResource(R.drawable.pass_gone);
+                    flag_affirm_new_password = false;
+                }else{
+                    et_affirm_new_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    iv_show_affirm_new_password.setImageResource(R.drawable.pass_visuable);
+                    flag_affirm_new_password = true;
+                }
+                String password = et_affirm_new_password.getText().toString();
+                if (!TextUtils.isEmpty(password))
+                    et_new_password.setSelection(password.length());
+                break;
+            case R.id.btn_submit:
                 if (netUtil.isNetworkAvailable(this)){
                     String username = et_mobile.getText().toString();
-                    String password = et_password.getText().toString();
-                    if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)){
+                    String newPassword = et_new_password.getText().toString();
+                    String affirmPassword = et_affirm_new_password.getText().toString();
+                    if (TextUtils.isEmpty(username) || TextUtils.isEmpty(newPassword) || TextUtils.isEmpty(affirmPassword)){
                         ToastUtils.showToast(this,"用户名或密码为空");
+                        return;
+                    }else if (!newPassword.equals(affirmPassword)){
+                        ToastUtils.showToast(this,"两次输入密码不一致");
                         return;
                     }
                     loadingDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
                             .setTitleText("Loading");
                     loadingDialog.show();
                     loadingDialog.setCancelable(false);
-
-                    userLogin(username,password);
+                    updateUserPassword(username,newPassword);
                 }else {
-                    // 没有网络
                     new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                             .setTitleText("糟糕...")
                             .setContentText("网络无连接！")
@@ -256,60 +296,30 @@ public class LoginActivity extends FragmentActivity implements View.OnClickListe
                                 public void onClick(SweetAlertDialog sDialog) {
                                     sDialog.dismiss();
                                     startActivity(new Intent(Settings.ACTION_SETTINGS));
-
                                 }
                             })
                             .show();
                 }
                 break;
-            case R.id.regist:
-                Intent intent = new Intent(this,RegisterActivity.class);
-                startActivity(intent);
-                /**
-                 *  R.anim.slide_in_right:新的Activity进入时的动画，这里是指OtherActivity进入时的动画
-                 *  R.anim.slide_out_left：旧的Activity出去时的动画，这里是指this进入时的动画
-                 *  overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                 */
-                overridePendingTransition(R.anim.activity_slide_in_up,R.anim.activity_hold);
-                break;
-            case R.id.forget_password:
-                startActivity(new Intent(this,RetrievePasswordActivity.class));
-                /**
-                 *  R.anim.slide_in_right:新的Activity进入时的动画，这里是指OtherActivity进入时的动画
-                 *  R.anim.slide_out_left：旧的Activity出去时的动画，这里是指this进入时的动画
-                 *  overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                 */
-                overridePendingTransition(R.anim.activity_slide_in_up,R.anim.activity_hold);
-                break;
-            case R.id.contact_service:
-                startActivity(new Intent(this, ContactServiceActivity.class));
-                overridePendingTransition(R.anim.activity_slide_in_up,R.anim.activity_slide_out_down);
-                break;
-            case R.id.about_us:
-                startActivity(new Intent(this, AboutUsActivity.class));
-                overridePendingTransition(R.anim.activity_slide_in_up,R.anim.activity_slide_out_down);
-                break;
-
         }
     }
 
-    private void userLogin(String username,String password){
 
-        ApiServiceExecutor.getInstance().loginUser(username, password, new HttpCallBack() {
+
+    public void updateUserPassword(String username,String newPassword){
+        ApiServiceExecutor.getInstance().updateUserPassword(username, newPassword, new HttpCallBack() {
             @Override
             public void onSuccess(Object response) {
                 if (response != null){
-                    LoginBackResult result = (LoginBackResult) response;
-                    Logger.d("TAG","login result is "+response.toString());
-
-                    dealWithCallBack(result);
+                    UpdatePasswordBackResult result = (UpdatePasswordBackResult) response;
+                    resultCallBack(result);
                 }
             }
 
             @Override
             public void onFailure(Throwable e) {
+                Logger.d("TAG", "onFailure: "+e.getMessage()+" "+e.getLocalizedMessage()+" "+e.toString());
                 e.printStackTrace();
-                e.getMessage();
                 loadingDialog.setTitleText("糟糕...")
                         .setContentText("出现异常错误!")
                         .changeAlertType(SweetAlertDialog.ERROR_TYPE);
@@ -317,51 +327,38 @@ public class LoginActivity extends FragmentActivity implements View.OnClickListe
         });
     }
 
-    private void dealWithCallBack(LoginBackResult result){
-        if (result.getCode() == -1){
+    private void resultCallBack(UpdatePasswordBackResult result){
+        if (result.getCode() == 404){
             loadingDialog.setTitleText("遗憾...")
                     .setContentText("该账号不存在！")
-                    .setConfirmText("去注册")
+                    .setConfirmText("确定")
+                    .setCancelText("取消")
+                    .changeAlertType(SweetAlertDialog.WARNING_TYPE);
+        }else if (result.getCode() == 200){
+            loadingDialog.setTitleText("修改成功！")
+                    .setConfirmText("去登陆")
                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             loadingDialog.dismiss();
-                            Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.activity_slide_in_up,R.anim.activity_hold);
-
+                            finish();
+                            overridePendingTransition(0,R.anim.activity_slide_out_down);
                         }
                     })
-                    .setCancelText("取消")
-                    .changeAlertType(SweetAlertDialog.WARNING_TYPE);
-        }else if (result.getCode() == 0){
-            loadingDialog.setTitleText("登录成功！")
                     .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (loadingDialog.isShowing()){
-                        loadingDialog.dismiss();
-                    }
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(android.R.anim.slide_out_right,R.anim.activity_hold);
-                    finish();
-                }
-            },1000);
-            UserData.isLogin = true;
-            UserData.username = et_mobile.getText().toString();
-            UserData.password = et_password.getText().toString();
-        }else if(result.getCode() == 1){
-            loadingDialog.setTitleText("抱歉...")
-                    .setContentText("密码错误!")
+        }else if (result.getCode() == 300){
+            loadingDialog.setTitleText("糟糕...")
+                    .setContentText("密码修改失败!")
                     .changeAlertType(SweetAlertDialog.ERROR_TYPE);
         }else if (result.getCode() == 500){
             loadingDialog.setTitleText("糟糕...")
                     .setContentText("出现异常错误!")
                     .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+
         }
     }
+
+
 
     @Override
     protected void onDestroy() {

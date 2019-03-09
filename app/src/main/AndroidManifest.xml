@@ -63,14 +63,17 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".activity.FuzzySearchAngiospermResultActivity"
             android:screenOrientation="portrait"/>
-
         <activity android:name=".activity.HelpActivity"
             android:screenOrientation="portrait"/>
-
         <activity android:name=".login.LoginActivity"
             android:screenOrientation="portrait"/>
-
         <activity android:name=".login.RegisterActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".login.RetrievePasswordActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.ContactServiceActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.AboutUsActivity"
             android:screenOrientation="portrait"/>
 
         <service android:name="com.baidu.location.f"

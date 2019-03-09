@@ -8,35 +8,29 @@ import android.webkit.WebView;
 import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.base.BaseActivity;
 
-public class HelpActivity extends BaseActivity {
+public class AboutUsActivity extends BaseActivity {
 
     private WebView webView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitleBarTitle(this.getResources().getString(R.string.help_menu));
+        setTitleBarTitle(this.getResources().getString(R.string.about_us));
         setTitleRTBtnVisiable(View.INVISIBLE);
         setCenterClick(false);
 
         initView();
-        loadHtml();
     }
 
     @Override
     protected void initView() {
-        webView = findViewById(R.id.helpWebView);
-
-    }
-
-    private void loadHtml(){
+        webView = findViewById(R.id.web_view);
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl("file:///android_asset/html/help.html");
+        webView.loadUrl("file:///android_asset/html/about_us.html");
     }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_help;
+        return R.layout.activity_about_us;
     }
-
 }

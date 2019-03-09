@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.base.BaseActivity;
+import com.example.ai.swuplant.data.PlantData;
+import com.example.ai.swuplant.data.UserData;
 import com.example.ai.swuplant.login.LoginActivity;
 import com.example.ai.swuplant.utils.FontUtils;
 import com.example.ai.swuplant.utils.IntentUtils;
@@ -71,7 +73,11 @@ public class SplashActivity extends BaseActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        IntentUtils.showActivity(SplashActivity.this,LoginActivity.class);
+                        if (UserData.isLogin && PlantData.plantModelList.size()>0 && PlantData.plantInfoList.size()>0){
+                            IntentUtils.showActivity(SplashActivity.this,MainActivity.class);
+                        }else {
+                            IntentUtils.showActivity(SplashActivity.this,LoginActivity.class);
+                        }
                         finish();
                     }
                 },5000);

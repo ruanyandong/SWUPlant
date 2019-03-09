@@ -1,6 +1,5 @@
 package com.example.ai.swuplant.fragment;
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
@@ -18,8 +17,11 @@ import com.example.ai.swuplant.activity.PlantDetailActivity;
 import com.example.ai.swuplant.adapter.MyFavoriteListAdapter;
 import com.example.ai.swuplant.base.BaseFragment;
 import com.example.ai.swuplant.data.PlantData;
-import com.example.ai.swuplant.database.MyFavoriteDatabaseHelper;
+import com.example.ai.swuplant.data.UserData;
 import com.example.ai.swuplant.entity.BatchManageModel;
+import com.example.ai.swuplant.net.bean.CollectionBackResult;
+import com.example.ai.swuplant.net.netframe.ApiServiceExecutor;
+import com.example.ai.swuplant.net.netframe.HttpCallBack;
 import com.example.ai.swuplant.utils.Constant;
 import com.example.ai.swuplant.utils.IntentUtils;
 import java.util.ArrayList;
@@ -32,7 +34,6 @@ public class FavoriteFragment extends BaseFragment {
 
     private List<BatchManageModel> plantDatas = new ArrayList<>();
 
-    private MyFavoriteDatabaseHelper databaseHelper;
 
     private List<String> plantNameList = new ArrayList<>();
 
@@ -50,62 +51,47 @@ public class FavoriteFragment extends BaseFragment {
         View view=inflater.
                 inflate(R.layout.fragment_favorite,
                         container, false);
-        databaseHelper = new MyFavoriteDatabaseHelper(getActivity().getApplicationContext());
-        query();
 
         initView(view);
         return view;
     }
 
-    private void query(){
-        Cursor cursor = databaseHelper.getAllData();
-        plantNameList.clear();
-        if(cursor!=null){
-            while(cursor.moveToNext()){
-                String plantName=cursor.getString(cursor.getColumnIndex("plantName"));
-                plantNameList.add(plantName);
-            }
-            Log.d("TAG", "query: plantNameList"+plantNameList.size());
+    private void getCollection(){
+        ApiServiceExecutor.getInstance().getCollectionList(UserData.username, new HttpCallBack() {
+            @Override
+            public void onSuccess(Object response) {
+                if (response != null){
+                    CollectionBackResult result = (CollectionBackResult) response;
+                    if (result.getCode() == 200){
+                        plantNameList = result.getPlantNames();
+                        for (int i = 0; i < PlantData.plantModelList.size(); i++) {
+                            if (plantNameList.get(i).equals(PlantData.plantModelList.get(i).getPlantChineseName())){
 
-            cursor.close();
-        }
-
-        plantDatas.clear();
-        for (int i = 0; i < plantNameList.size(); i++) {
-
-            for (int j = 0; j < PlantData.plantModelList.size(); j++) {
-                if (plantNameList.get(i).equals(PlantData.plantModelList.get(j).getPlantChineseName())){
-                    plantDatas.add(new BatchManageModel(PlantData.plantModelList.get(j)));
-                    break;
+                            }
+                        }
+                    }
                 }
             }
-        }
+
+            @Override
+            public void onFailure(Throwable e) {
+
+            }
+        });
 
     }
-
     @Override
     public void onResume() {
         super.onResume();
-        if (databaseHelper == null){
-            databaseHelper = new MyFavoriteDatabaseHelper(getActivity().getApplicationContext());
-        }
-
-        query();
-        mAdapter.notifyDataSetChanged();
 
         initEvent();
 
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        databaseHelper.close();
-        databaseHelper = null;
-    }
 
     @Override
     protected void initEvent() {
+
 
         batchManageTV.setOnClickListener(v->{
             mAdapter.flage = !mAdapter.flage;
@@ -141,12 +127,10 @@ public class FavoriteFragment extends BaseFragment {
             if (mAdapter.flage){
                 for (int i = 0; i < plantDatas.size(); i++) {
                     if (plantDatas.get(i).getCheck()){
-                        databaseHelper.deleteData(plantDatas.get(i).getPlantModel().getPlantImageURL());
-                        //plantDatas.remove(i);//TODO:有问题
-                        Log.d("TAG", "initEvent: "+i);
+
                     }
                 }
-                query();
+
                 Log.d("TAG", "initEvent: "+plantDatas.size());
                 mAdapter.notifyDataSetChanged();
             }
@@ -175,9 +159,6 @@ public class FavoriteFragment extends BaseFragment {
         allSelectTV = view.findViewById(R.id.all_select);
         noneSelectTV = view.findViewById(R.id.none_select);
         deleteTV = view.findViewById(R.id.delete);
-
-
-
     }
 
 }

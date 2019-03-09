@@ -4,7 +4,7 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_ffffff"
+    android:background="@drawable/login_bg"
     android:clipToPadding="true"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
@@ -28,9 +28,9 @@
         android:text="欢迎登陆"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:drawableHeight="40dp"
-        app:drawableWidth="120dp"
-        app:leftDrawable="@drawable/google" />
+        app:drawableHeight="80dp"
+        app:drawableWidth="80dp"
+        app:leftDrawable="@drawable/portrait" />
 
     <LinearLayout
         android:id="@+id/body"
@@ -193,10 +193,11 @@
             android:padding="10dp">
 
             <TextView
+                android:id="@+id/contact_service"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:text="联系客服"
+                android:text="@string/contact_service"
                 android:textColor="@color/color_b0b8b2"
                 android:textSize="14dp" />
 
@@ -208,10 +209,11 @@
                 android:background="@color/color_eeeeee" />
 
             <TextView
+                android:id="@+id/about_us"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:text="关于我们"
+                android:text="@string/about_us"
                 android:textColor="@color/color_b0b8b2"
                 android:textSize="14dp" />
         </LinearLayout>

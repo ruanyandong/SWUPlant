@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.base.BaseActivity;
 
@@ -46,6 +45,7 @@ public class TitleBar extends RelativeLayout implements View.OnClickListener{
         mRTBtn.setOnClickListener(this);
         mTitle.setClickable(false);
     }
+
 
     /**
      * 右边的控件是否可见

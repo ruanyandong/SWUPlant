@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
-
 import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.customcomponent.TitleBar;
 
@@ -30,6 +29,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void initBaseView() {
         mTitleBar = (TitleBar) findViewById(R.id.base_titlebar);
+    }
+
+    public void setTitleBarBackgroundColor(int color){
+        if (mTitleBar != null) {
+            mTitleBar.setBackgroundColor(color);
+        }
     }
 
 
@@ -84,6 +89,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void setCenterClick(boolean bool) {
         mTitleBar.setTitleClick(bool);
     }
+
 
     public void onRtBtnClick() {
         // titlebar左上角button的click时间

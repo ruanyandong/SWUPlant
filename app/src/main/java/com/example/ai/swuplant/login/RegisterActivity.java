@@ -2,12 +2,8 @@ package com.example.ai.swuplant.login;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
@@ -23,20 +19,16 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.login.component.DrawableTextView;
 import com.example.ai.swuplant.login.listener.KeyboardWatcher;
 import com.example.ai.swuplant.net.netframe.ApiServiceExecutor;
 import com.example.ai.swuplant.net.netframe.HttpCallBack;
 import com.example.ai.swuplant.net.bean.RegisterBackResult;
-import com.example.ai.swuplant.net.broadcast.NetworkBroadcastReceiver;
 import com.example.ai.swuplant.net.utils.netUtil;
+import com.example.ai.swuplant.utils.ToastUtils;
 import com.example.customdialog.SweetAlertDialog;
 import com.orhanobut.logger.Logger;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class RegisterActivity extends FragmentActivity implements View.OnClickListener, KeyboardWatcher.SoftKeyboardStateListener {
 
@@ -54,8 +46,6 @@ public class RegisterActivity extends FragmentActivity implements View.OnClickLi
     private KeyboardWatcher keyboardWatcher;
 
     private View root;
-
-    private NetworkBroadcastReceiver receiver;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -133,7 +123,7 @@ public class RegisterActivity extends FragmentActivity implements View.OnClickLi
                     return;
                 if (!s.toString().matches("[A-Za-z0-9]+")) {
                     String temp = s.toString();
-                    Toast.makeText(RegisterActivity.this, R.string.please_input_limit_pwd, Toast.LENGTH_SHORT).show();
+                    ToastUtils.showToast(RegisterActivity.this,getResources().getString(R.string.please_input_limit_pwd));
                     s.delete(temp.length() - 1, temp.length());
                     et_password.setSelection(s.length());
                 }
@@ -216,12 +206,18 @@ public class RegisterActivity extends FragmentActivity implements View.OnClickLi
                 break;
             case R.id.btn_register:
                 if (netUtil.isNetworkAvailable(this)){
+                    String username = et_mobile.getText().toString();
+                    String password = et_password.getText().toString();
+                    if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)){
+                        ToastUtils.showToast(this,"用户名或密码为空");
+                        return;
+                    }
                     loadingDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
                             .setTitleText("Loading");
                     loadingDialog.show();
                     loadingDialog.setCancelable(false);
 
-                    registerUser();
+                    registerUser(username,password);
                 }else {
                     new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                             .setTitleText("糟糕...")
@@ -249,9 +245,8 @@ public class RegisterActivity extends FragmentActivity implements View.OnClickLi
     }
 
 
-    private void registerUser(){
-        String username = et_mobile.getText().toString();
-        String password = et_password.getText().toString();
+    private void registerUser(String username,String password){
+
         ApiServiceExecutor.getInstance().registerUser(username, password, new HttpCallBack() {
             @Override
             public  void onSuccess(Object response) {

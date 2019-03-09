@@ -2,11 +2,13 @@ package com.example.ai.swuplant.net.netframe;
 
 import com.example.ai.swuplant.entity.PlantModel;
 import com.example.ai.swuplant.entity.PointInfo;
+import com.example.ai.swuplant.net.bean.CollectionBackResult;
 import com.example.ai.swuplant.net.bean.LoginBackResult;
 import com.example.ai.swuplant.net.bean.RegisterBackResult;
+import com.example.ai.swuplant.net.bean.UpdatePasswordBackResult;
 
 import java.util.List;
-import java.util.logging.Handler;
+import java.util.Map;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -36,7 +38,7 @@ public class ApiServiceExecutor extends BaseApiServiceExecutor {
      * @param httpCallBack
      */
     public void registerUser(String username, String password, HttpCallBack httpCallBack){
-        observe(mApiService.getRegisterBackResult(username,password)).map(new Function<RegisterBackResult, RegisterBackResult>() {
+        observe(mApiService.registerUser(username,password)).map(new Function<RegisterBackResult, RegisterBackResult>() {
             @Override
             public RegisterBackResult apply(RegisterBackResult registerBackResult) throws Exception {
                 return registerBackResult;
@@ -65,13 +67,43 @@ public class ApiServiceExecutor extends BaseApiServiceExecutor {
     }
 
     /**
+     * 用户修改密码
+     * @param username
+     * @param newPassword
+     * @param httpCallBack
+     */
+    public void updateUserPassword(String username,String newPassword,HttpCallBack httpCallBack){
+        observe(mApiService.updateUserPassword(username,newPassword)).subscribe(new Observer<UpdatePasswordBackResult>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(UpdatePasswordBackResult updatePasswordBackResult) {
+                httpCallBack.onSuccess(updatePasswordBackResult);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                httpCallBack.onFailure(e);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
+
+    /**
      * 用户登录
      * @param username
      * @param password
      * @param httpCallBack
      */
     public void loginUser(String username, String password, HttpCallBack httpCallBack){
-        observe(mApiService.getLoginBackResult(username,password)).subscribe(new Observer<LoginBackResult>() {
+        observe(mApiService.userLogin(username,password)).subscribe(new Observer<LoginBackResult>() {
             @Override
             public void onSubscribe(Disposable d) {
 
@@ -234,6 +266,65 @@ public class ApiServiceExecutor extends BaseApiServiceExecutor {
         });
     }
 
+    /**
+     * 收藏接口
+     * @param isCollection
+     * @param username
+     * @param plantNames
+     * @param httpCallBack
+     */
+    public void collectionPlant(boolean isCollection,String username,String plantNames,HttpCallBack httpCallBack){
+        observe(mApiService.collectionPlant(isCollection,username,plantNames)).subscribe(new Observer<CollectionBackResult>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(CollectionBackResult collectionBackResult) {
+                httpCallBack.onSuccess(collectionBackResult);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                httpCallBack.onFailure(e);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
+
+    /**
+     * 获取收藏列表
+     * @param username
+     * @param httpCallBack
+     */
+    public void getCollectionList(String username,HttpCallBack httpCallBack){
+        observe(mApiService.getCollectionList(username)).subscribe(new Observer<CollectionBackResult>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(CollectionBackResult collectionBackResult) {
+                httpCallBack.onSuccess(collectionBackResult);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                httpCallBack.onFailure(e);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
 
 
 

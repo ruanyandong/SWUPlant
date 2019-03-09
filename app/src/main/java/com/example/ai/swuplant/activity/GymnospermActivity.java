@@ -47,7 +47,7 @@ public class GymnospermActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setTitleBarTitle("裸子植物");
+        setTitleBarTitle(this.getResources().getString(R.string.gymnosperm));
         setTitleRTBtnVisiable(View.INVISIBLE);
         setCenterClick(false);
 

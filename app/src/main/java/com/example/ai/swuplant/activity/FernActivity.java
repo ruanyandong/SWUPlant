@@ -46,18 +46,12 @@ public class FernActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitleBarTitle("蕨类植物");
+        setTitleBarTitle(this.getResources().getString(R.string.fern));
         setTitleRTBtnVisiable(View.INVISIBLE);
         setCenterClick(false);
 
         initView();
         initData();
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
 
     }
 
