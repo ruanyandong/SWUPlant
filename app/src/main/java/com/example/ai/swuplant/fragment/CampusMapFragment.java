@@ -46,6 +46,7 @@ import com.example.ai.swuplant.utils.Constant;
 import com.example.ai.swuplant.utils.IntentUtils;
 import com.example.ai.swuplant.utils.MyOrientationListener;
 import com.example.ai.swuplant.utils.ToastUtils;
+import com.example.customdialog.SweetAlertDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,7 @@ public class CampusMapFragment extends BaseFragment {
 
     private View view=null;
     private ClearEditText mSearchView;
+    private TextView mSearchText;
 
     private MapView mMapView = null;
     private BaiduMap baiduMap = null;
@@ -345,55 +347,54 @@ public class CampusMapFragment extends BaseFragment {
         mMapView=view.findViewById(R.id.bmapView);
         initMapView();
         mSearchView=view.findViewById(R.id.map_search_edit);
+        mSearchText = view.findViewById(R.id.search_text);
         mMarker = BitmapDescriptorFactory.fromResource(R.drawable.point);
     }
 
     @Override
     protected void initEvent() {
 
-        mSearchView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        mSearchText.setOnClickListener(view->{
 
+            String plantName = mSearchView.getText().toString();
+            if (TextUtils.isEmpty(plantName)){
+                ToastUtils.showToast(getActivity().getApplicationContext(),"植物名称为空");
+                return;
             }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            boolean isExit = false;
 
+            final SweetAlertDialog loadingDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE)
+                    .setTitleText("搜索中，请稍后...");
+            loadingDialog.show();
+            loadingDialog.setCancelable(false);
+
+            for (int i = 0; i < PlantData.plantModelList.size(); i++) {
+                if (PlantData.plantModelList.get(i).getPlantChineseName().equals(plantName)){
+                    isExit = true;
+                    Bundle bundle = new Bundle();
+                    bundle.putString(Constant.PLANT_NAME,plantName);
+
+                    mSearchView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadingDialog.dismissWithAnimation();
+                            IntentUtils.showActivity(getActivity(), PlantDetailActivity.class,bundle);
+                        }
+                    },1000);
+
+                    break;
+                }
             }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (TextUtils.isEmpty(s.toString())){
-                    return;
-                }
-
-                String plantName = s.toString();
-                boolean isExit = false;
-
-                for (int i = 0; i < PlantData.plantModelList.size(); i++) {
-                    if (PlantData.plantModelList.get(i).getPlantChineseName().equals(plantName)){
-                        isExit = true;
-                        Bundle bundle = new Bundle();
-                        bundle.putString(Constant.PLANT_NAME,plantName);
-                        mSearchView.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                IntentUtils.showActivity(getActivity(), PlantDetailActivity.class,bundle);
-                                mSearchView.setText("");
-                            }
-                        },1000);
-
-                        break;
-                    }
-                }
-
-                if (!isExit){
-                    ToastUtils.showToast(getActivity().getApplicationContext(),"搜索的植物不存在");
-                }
-
+            if (!isExit){
+                loadingDialog.setTitleText("抱歉...")
+                        .setContentText("您搜索的植物不存在!")
+                        .changeAlertType(SweetAlertDialog.ERROR_TYPE);
             }
+
         });
+
 
     }
 

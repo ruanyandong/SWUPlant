@@ -11,20 +11,44 @@
         android:layout_height="match_parent"
         android:clickable="true" />
 
-    <com.example.ai.swuplant.customcomponent.ClearEditText
-        android:id="@+id/map_search_edit"
+    <RelativeLayout
+        android:layout_height="80dp"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:paddingLeft="8dp"
-        android:background="#9DDE76"
-        android:drawableLeft="@drawable/search"
-        android:hint="@string/search_hint"
-        android:drawablePadding="3dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="60dp"
-        android:layout_marginRight="10dp"
-        android:maxLines="1"
-        android:textSize="15dp" />
+        android:paddingTop="10dp">
+        <com.example.ai.swuplant.customcomponent.ClearEditText
+            android:id="@+id/map_search_edit"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:paddingLeft="8dp"
+            android:layout_centerInParent="true"
+            android:background="@color/colorGreen"
+            android:drawableLeft="@drawable/search"
+            android:hint="@string/search_hint"
+            android:drawablePadding="3dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="10dp"
+            android:maxLines="1"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/search_text"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:text="搜索"
+            android:clickable="true"
+            android:gravity="center"
+            android:background="@drawable/search_text_view_style"
+            android:layout_marginLeft="15dp"
+            android:textSize="18sp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"/>
+
+    </RelativeLayout>
+
 
 
 </FrameLayout>
