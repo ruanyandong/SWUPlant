@@ -63,6 +63,7 @@ public class LoginActivity extends FragmentActivity implements View.OnClickListe
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         initView();
         initListener();
 

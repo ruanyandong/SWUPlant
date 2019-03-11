@@ -5,13 +5,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.activity.PlantDetailActivity;
 import com.example.ai.swuplant.adapter.MyFavoriteListAdapter;
@@ -31,11 +29,7 @@ public class FavoriteFragment extends BaseFragment {
 
     private RecyclerView recyclerView;
     private MyFavoriteListAdapter mAdapter;
-
     private List<BatchManageModel> plantDatas = new ArrayList<>();
-
-
-    private List<String> plantNameList = new ArrayList<>();
 
     private TextView batchManageTV;
     private LinearLayout manageLayout;
@@ -48,10 +42,7 @@ public class FavoriteFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view=inflater.
-                inflate(R.layout.fragment_favorite,
-                        container, false);
-
+        View view=inflater.inflate(R.layout.fragment_favorite, container, false);
         initView(view);
         return view;
     }
@@ -63,35 +54,38 @@ public class FavoriteFragment extends BaseFragment {
                 if (response != null){
                     CollectionBackResult result = (CollectionBackResult) response;
                     if (result.getCode() == 200){
-                        plantNameList = result.getPlantNames();
+                        plantDatas.clear();
+                        List<String> plantNames= result.getData().getPlantNames();
                         for (int i = 0; i < PlantData.plantModelList.size(); i++) {
-                            if (plantNameList.get(i).equals(PlantData.plantModelList.get(i).getPlantChineseName())){
-
+                            for (int j = 0; j < plantNames.size(); j++) {
+                                if (plantNames.get(j).equals(PlantData.plantModelList.get(i).getPlantChineseName())){
+                                    plantDatas.add(new BatchManageModel(PlantData.plantModelList.get(i)));
+                                }
                             }
+
                         }
+                        mAdapter.notifyDataSetChanged();
                     }
                 }
             }
-
             @Override
             public void onFailure(Throwable e) {
-
+                e.getMessage();
+                e.printStackTrace();
             }
         });
-
     }
+
     @Override
     public void onResume() {
         super.onResume();
-
+        getCollection();
         initEvent();
 
     }
 
-
     @Override
     protected void initEvent() {
-
 
         batchManageTV.setOnClickListener(v->{
             mAdapter.flage = !mAdapter.flage;
@@ -124,15 +118,54 @@ public class FavoriteFragment extends BaseFragment {
         });
 
         deleteTV.setOnClickListener(v->{
+            StringBuilder stringBuilder = new StringBuilder();
             if (mAdapter.flage){
                 for (int i = 0; i < plantDatas.size(); i++) {
                     if (plantDatas.get(i).getCheck()){
-
+                        stringBuilder.append(plantDatas.get(i).getPlantModel().getPlantChineseName()+",");
                     }
                 }
+                String plantNames = stringBuilder.toString();
 
-                Log.d("TAG", "initEvent: "+plantDatas.size());
-                mAdapter.notifyDataSetChanged();
+                ApiServiceExecutor.getInstance().collectionPlant(false, UserData.username, plantNames, new HttpCallBack() {
+                    @Override
+                    public void onSuccess(Object response) {
+                        if (response != null){
+                            CollectionBackResult result = (CollectionBackResult) response;
+                            if (result.getCode() == 200){
+                                ApiServiceExecutor.getInstance().getCollectionList(UserData.username, new HttpCallBack() {
+                                    @Override
+                                    public void onSuccess(Object response) {
+                                        if (response != null){
+                                            CollectionBackResult result = (CollectionBackResult) response;
+                                            if (result.getCode() == 200){
+                                                plantDatas.clear();
+                                                List<String> plantNames= result.getData().getPlantNames();
+                                                for (int i = 0; i < PlantData.plantModelList.size(); i++) {
+                                                    for (int j = 0; j < plantNames.size(); j++) {
+                                                        if (plantNames.get(j).equals(PlantData.plantModelList.get(i).getPlantChineseName())){
+                                                            plantDatas.add(new BatchManageModel(PlantData.plantModelList.get(i)));
+                                                        }
+                                                    }
+
+                                                }
+                                                mAdapter.notifyDataSetChanged();
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Throwable e) {
+                                    }
+                                });
+                            }
+                        }
+                    }
+                    @Override
+                    public void onFailure(Throwable e) {
+
+                    }
+                });
             }
         });
     }
@@ -153,12 +186,13 @@ public class FavoriteFragment extends BaseFragment {
                 IntentUtils.showActivity(getActivity(), PlantDetailActivity.class,bundle);
             }
         });
-
         batchManageTV = view.findViewById(R.id.batch_manage);
         manageLayout = view.findViewById(R.id.manage_bar);
         allSelectTV = view.findViewById(R.id.all_select);
         noneSelectTV = view.findViewById(R.id.none_select);
         deleteTV = view.findViewById(R.id.delete);
+
+        getCollection();
     }
 
 }

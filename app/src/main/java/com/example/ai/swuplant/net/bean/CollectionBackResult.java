@@ -5,8 +5,27 @@ import java.util.List;
 public class CollectionBackResult {
     private int code;
     private String msg;
-    private String username;
-    private List<String> plantNames;
+    private Data data;
+    public class Data{
+        private String username;
+        private List<String> plantNames;
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public List<String> getPlantNames() {
+            return plantNames;
+        }
+
+        public void setPlantNames(List<String> plantNames) {
+            this.plantNames = plantNames;
+        }
+    }
 
     public int getCode() {
         return code;
@@ -24,25 +43,12 @@ public class CollectionBackResult {
         this.msg = msg;
     }
 
-    public String getUsername() {
-        return username;
+    public Data getData() {
+        return data;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setData(Data data) {
+        this.data = data;
     }
 
-    public List<String> getPlantNames() {
-        return plantNames;
-    }
-
-    public void setPlantNames(List<String> plantNames) {
-        this.plantNames = plantNames;
-    }
-
-
-    @Override
-    public String toString() {
-        return getCode()+"\t"+getMsg()+"\t"+getUsername()+"\t"+getPlantNames();
-    }
 }

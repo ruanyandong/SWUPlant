@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,7 +21,7 @@ import com.example.ai.swuplant.net.utils.netUtil;
 import com.example.ai.swuplant.utils.Constant;
 import com.example.ai.swuplant.utils.ToastUtils;
 import com.example.customdialog.SweetAlertDialog;
-
+import com.orhanobut.logger.Logger;
 import java.util.List;
 
 public class PlantDetailActivity extends BaseActivity {
@@ -52,61 +53,94 @@ public class PlantDetailActivity extends BaseActivity {
     @Override
     protected void initEvent() {
 
-        Drawable.ConstantState hollowHeart = getResources().getDrawable(R.drawable.hollow_heart).getConstantState();
-        Drawable.ConstantState solidHeart = getResources().getDrawable(R.drawable.solid_heart).getConstantState();
+        /**
+         * 在android 5.0之前，我们可以通过下面的方式判断当前的ImageView使用的是哪张图片
+         *
+         * if(img.getDrawable().getCurrent().getConstantState().equals(getResources().getDrawable(R.mipmap.a).getConstantState()))
+         * {
+         * //是图片a
+         * }else{
+         * //不是
+         * }
+         *
+         * 当在android 5.0以后再使用此种方式去判断的话，会发现即使当前的img设置的图片为 a，但是两者比较后是不相等的，因为在android 5.0以后这中方式就不行了，需要用以下的方式去比较：
+         * if((img.getDrawable().getCurrent().getConstantState()).equals(ContextCompat.getDrawable(this,R.mipmap.a).getConstantState()))
+         * {
+         * //是图片a
+         * } else {
+         * //不是
+         * }
+         *
+         * android 5.0 以后获取drawable的方式应该改为：ContextCompat.getDrawable(this,R.mipmap.a)。
+         */
+        Drawable.ConstantState hollowHeart = ContextCompat.getDrawable(this,R.drawable.hollow_heart).getConstantState();
+        Drawable.ConstantState solidHeart = ContextCompat.getDrawable(this,R.drawable.solid_heart).getConstantState();
         imgHeart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String plantName = plantCnNameTv.getText().toString();
+                Drawable.ConstantState drawable = imgHeart.getDrawable().getCurrent().getConstantState();
+                ApiServiceExecutor.getInstance().getCollectionList(UserData.username, new HttpCallBack() {
+                    @Override
+                    public void onSuccess(Object response) {
+                        if (response != null){
+                            CollectionBackResult result = (CollectionBackResult) response;
+                            if (result.getCode() == 200){
+                                List<String> plantNames = result.getData().getPlantNames();
+                                if (plantNames != null){
+                                    isHave = isContains(plantName,plantNames);
+                                }
+                                if (drawable.equals(hollowHeart)){
+                                    if (!isHave){
+                                        ApiServiceExecutor.getInstance().collectionPlant(true, UserData.username, plantName, new HttpCallBack() {
+                                            @Override
+                                            public void onSuccess(Object response) {
+                                                if (response != null){
+                                                    CollectionBackResult result = (CollectionBackResult) response;
+                                                    if (result.getCode() == 200){
+                                                        imgHeart.setImageResource(R.drawable.solid_heart);
+                                                        ToastUtils.showToast(getApplicationContext(),PlantDetailActivity.this.getResources().getString(R.string.collection_success));
+                                                    }
+                                                }
+                                            }
+                                            @Override
+                                            public void onFailure(Throwable e) {
+                                                e.getMessage();
+                                            }
+                                        });
+                                    }
+                                }else if (drawable.equals(solidHeart)){
+                                    if (isHave){
+                                        ApiServiceExecutor.getInstance().collectionPlant(false, UserData.username, plantName, new HttpCallBack() {
+                                            @Override
+                                            public void onSuccess(Object response) {
+                                                if (response != null){
+                                                    CollectionBackResult result = (CollectionBackResult) response;
+                                                    if (result.getCode() == 200){
+                                                        imgHeart.setImageResource(R.drawable.hollow_heart);
+                                                        ToastUtils.showToast(getApplicationContext(),PlantDetailActivity.this.getResources().getString(R.string.cancel_collection));
+                                                    }
+                                                }
+                                            }
 
-                Drawable.ConstantState drawable = imgHeart.getDrawable().getConstantState();
-
-                if (drawable.equals(hollowHeart)){
-                    if (!isHave){
-                        ApiServiceExecutor.getInstance().collectionPlant(true, UserData.username, plantName, new HttpCallBack() {
-                            @Override
-                            public void onSuccess(Object response) {
-                                if (response != null){
-                                    CollectionBackResult result = (CollectionBackResult) response;
-                                    if (result.getCode() == 200){
-                                        imgHeart.setImageResource(R.drawable.solid_heart);
-                                        ToastUtils.showToast(getApplicationContext(),"收藏成功");
+                                            @Override
+                                            public void onFailure(Throwable e) {
+                                                e.getMessage();
+                                            }
+                                        });
                                     }
                                 }
-                            }
 
-                            @Override
-                            public void onFailure(Throwable e) {
-                                e.getMessage();
                             }
-                        });
-                    }else {
-                        imgHeart.setImageResource(R.drawable.solid_heart);
+                        }
                     }
-                }else if (drawable.equals(solidHeart)){
-                    if (isHave){
-                        ApiServiceExecutor.getInstance().collectionPlant(true, UserData.username, plantName, new HttpCallBack() {
-                            @Override
-                            public void onSuccess(Object response) {
-                                if (response != null){
-                                    CollectionBackResult result = (CollectionBackResult) response;
-                                    if (result.getCode() == 200){
-                                        imgHeart.setImageResource(R.drawable.hollow_heart);
-                                        ToastUtils.showToast(getApplicationContext(),"取消收藏");
-                                    }
-                                }
-                            }
 
-                            @Override
-                            public void onFailure(Throwable e) {
-                                e.getMessage();
-                            }
-                        });
-
-                    }else {
-                        imgHeart.setImageResource(R.drawable.hollow_heart);
+                    @Override
+                    public void onFailure(Throwable e) {
+                        e.printStackTrace();
+                        e.getMessage();
                     }
-                }
+                });
 
             }
         });
@@ -151,20 +185,21 @@ public class PlantDetailActivity extends BaseActivity {
                 }
             }
 
+            loadingDialog.dismissWithAnimation();
+
             ApiServiceExecutor.getInstance().getCollectionList(UserData.username, new HttpCallBack() {
                 @Override
                 public void onSuccess(Object response) {
                     if (response != null){
                         CollectionBackResult result = (CollectionBackResult) response;
                         if (result.getCode() == 200){
-                            List<String> plantNames = result.getPlantNames();
+                            List<String> plantNames = result.getData().getPlantNames();
                             if (plantNames != null){
                                 isHave = isContains(plantName,plantNames);
                             }
                             if (isHave){
                                 imgHeart.setImageResource(R.drawable.solid_heart);
                             }
-                            loadingDialog.dismissWithAnimation();
                         }
                     }
                 }
@@ -194,7 +229,6 @@ public class PlantDetailActivity extends BaseActivity {
                         public void onClick(SweetAlertDialog sDialog) {
                             sDialog.dismiss();
                             startActivity(new Intent(Settings.ACTION_SETTINGS));
-
                         }
                     })
                     .show();
