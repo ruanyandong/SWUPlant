@@ -7,7 +7,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="50dp"
+        android:background="@color/colorGreen">
         <TextView
             android:id="@+id/myFavoriteText"
             android:layout_width="wrap_content"
@@ -16,7 +17,7 @@
             android:textSize="22sp"
             android:textStyle="bold"
             android:layout_centerInParent="true"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/holo_blue_light"
             android:layout_margin="5dp" />
 
         <TextView
@@ -24,13 +25,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/batch_manage"
-            android:textSize="14sp"
-            android:textColor="@android:color/black"
-            android:layout_marginRight="3dp"
+            android:textSize="16sp"
+            android:textColor="@android:color/holo_orange_dark"
+            android:layout_marginRight="20dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"/>
 
     </RelativeLayout>
+
 
 
     <android.support.v7.widget.RecyclerView
@@ -54,6 +56,8 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:text="@string/all_select"
+            android:textSize="16sp"
+            android:textColor="@android:color/holo_green_light"
             android:gravity="center" />
         <TextView
             android:id="@+id/none_select"
@@ -61,6 +65,8 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:text="@string/none_select"
+            android:textColor="@android:color/holo_green_light"
+            android:textSize="16sp"
             android:gravity="center"/>
         <TextView
             android:id="@+id/delete"
@@ -68,6 +74,8 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:text="@string/delete"
+            android:textColor="@android:color/holo_green_light"
+            android:textSize="16sp"
             android:gravity="center"/>
 
     </LinearLayout>

@@ -138,14 +138,14 @@ public class FernActivity extends BaseActivity {
         if (currentPage < totalPageNumber) {
             ++currentPage;
             if (isExactDivision) {
-                for (int i = (currentPage - 1) * pageSize; i < (currentPage - 1) * pageSize + 6; i++) {
+                for (int i = (currentPage - 1) * pageSize; i < (currentPage - 1) * pageSize + pageSize; i++) {
                     dataSource.add(plantModels.get(i));
                 }
                 Logger.d("dataSource size is" + dataSource.size());
                 mAdapter.notifyDataSetChanged();
             } else {
                 if (currentPage < totalPageNumber) {
-                    for (int i = (currentPage - 1) * pageSize; i < (currentPage - 1) * pageSize + 6; i++) {
+                    for (int i = (currentPage - 1) * pageSize; i < (currentPage - 1) * pageSize + pageSize; i++) {
                         dataSource.add(plantModels.get(i));
                     }
                     mAdapter.notifyDataSetChanged();
@@ -180,7 +180,7 @@ public class FernActivity extends BaseActivity {
                 isExactDivision = false;
             }
 
-            for (int i = 0;i<6;i++){
+            for (int i = 0;i<pageSize;i++){
                 dataSource.add(plantModels.get(i));
                 Logger.d("dataSource size is" + dataSource.size());
             }

@@ -84,6 +84,11 @@ public class FavoriteFragment extends BaseFragment {
 
     }
 
+    private void resetColor(TextView viewSelect,TextView _normal,TextView normal){
+        viewSelect.setTextColor(getResources().getColor(android.R.color.holo_orange_dark));
+        _normal.setTextColor(getResources().getColor(android.R.color.holo_green_light));
+        normal.setTextColor(getResources().getColor(android.R.color.holo_green_light));
+    }
     @Override
     protected void initEvent() {
 
@@ -101,6 +106,7 @@ public class FavoriteFragment extends BaseFragment {
 
         allSelectTV.setOnClickListener(v->{
             if (mAdapter.flage) {
+                resetColor(allSelectTV,noneSelectTV,deleteTV);
                 for (int i = 0; i < plantDatas.size(); i++) {
                     plantDatas.get(i).setCheck(true);
                 }
@@ -110,6 +116,7 @@ public class FavoriteFragment extends BaseFragment {
 
         noneSelectTV.setOnClickListener(v->{
             if (mAdapter.flage) {
+                resetColor(noneSelectTV,allSelectTV,deleteTV);
                 for (int i = 0; i < plantDatas.size(); i++) {
                     plantDatas.get(i).setCheck(false);
                 }
@@ -120,6 +127,7 @@ public class FavoriteFragment extends BaseFragment {
         deleteTV.setOnClickListener(v->{
             StringBuilder stringBuilder = new StringBuilder();
             if (mAdapter.flage){
+                resetColor(deleteTV,allSelectTV,noneSelectTV);
                 for (int i = 0; i < plantDatas.size(); i++) {
                     if (plantDatas.get(i).getCheck()){
                         stringBuilder.append(plantDatas.get(i).getPlantModel().getPlantChineseName()+",");
