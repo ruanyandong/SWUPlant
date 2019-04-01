@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.base.BaseActivity;
@@ -18,12 +20,14 @@ import com.example.ai.swuplant.utils.IntentUtils;
 
 public class SplashActivity extends BaseActivity {
 
-    private Animation mAnimation;
+    private Animation mFlowerAnimation,mTextAnimation,mBgAnimation,mBottomAnimation;
     private ImageView mSplashImage;
     private TextView textViewTop;
     private TextView textViewMiddle;
     private TextView textViewBottom;
 
+    private RelativeLayout mBg;
+    private LinearLayout mBottomLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,7 +43,13 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        mAnimation = AnimationUtils.loadAnimation(this, R.anim.splash_animation);
+        mFlowerAnimation = AnimationUtils.loadAnimation(this, R.anim.splash_flower_animation);
+        mTextAnimation = AnimationUtils.loadAnimation(this,R.anim.text_animation);
+        mBgAnimation = AnimationUtils.loadAnimation(this,R.anim.splash_bg_animation);
+        mBottomAnimation = AnimationUtils.loadAnimation(this,R.anim.splash_bottom_animation);
+
+        mBottomLayout = findViewById(R.id.bottom_layout);
+        mBg = findViewById(R.id.splash_bg);
         mSplashImage = findViewById(R.id.splash_image);
         textViewTop = findViewById(R.id.splash_text_top);
         textViewMiddle = findViewById(R.id.splash_text_middle);
@@ -50,12 +60,15 @@ public class SplashActivity extends BaseActivity {
         textViewBottom.setTypeface(new FontUtils(getApplicationContext()).getTypeface());
 
         setAnimationListener();
-        mSplashImage.startAnimation(mAnimation);
+        mBg.startAnimation(mBgAnimation);
+        mBottomLayout.startAnimation(mBgAnimation);
+        mSplashImage.startAnimation(mFlowerAnimation);
+        textViewTop.startAnimation(mTextAnimation);
     }
 
     private void setAnimationListener(){
 
-        mAnimation.setAnimationListener(new Animation.AnimationListener() {
+        mFlowerAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
 
