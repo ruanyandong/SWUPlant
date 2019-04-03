@@ -6,6 +6,7 @@
     android:toYScale="1.0"
     android:pivotX="50%"
     android:pivotY="50%"
+    android:fillAfter="true"
     android:duration="3000"
     android:interpolator="@android:anim/bounce_interpolator">
 

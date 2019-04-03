@@ -5,7 +5,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,7 +25,6 @@ import com.example.ai.swuplant.net.utils.netUtil;
 import com.example.ai.swuplant.utils.Constant;
 import com.example.ai.swuplant.utils.ToastUtils;
 import com.example.customdialog.SweetAlertDialog;
-import com.orhanobut.logger.Logger;
 import java.util.List;
 
 public class PlantDetailActivity extends BaseActivity {
@@ -37,11 +40,14 @@ public class PlantDetailActivity extends BaseActivity {
     private String plantName = null;
     private boolean isHave = false;
 
+    private Toolbar toolBar;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
+
+    private ImageView bottomImage;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitleBarBackgroundColor(this.getResources().getColor(R.color.success_stroke_color));
-
         initView();
 
         initData();
@@ -147,7 +153,35 @@ public class PlantDetailActivity extends BaseActivity {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void initView() {
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null){
+            plantName = bundle.getString(Constant.PLANT_NAME);
+
+        }
+
+        toolBar = findViewById(R.id.toolbar);
+        collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
+        setSupportActionBar(toolBar);
+        ActionBar actionBar=getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        collapsingToolbarLayout.setTitle(plantName);
+
+        bottomImage = findViewById(R.id.plant_detail_image_bottom);
         plantImageView = findViewById(R.id.plant_detail_image);
         imgHeart = findViewById(R.id.plant_detail_heart);
         plantCnNameTv = findViewById(R.id.plant_detail_CNname);
@@ -162,11 +196,6 @@ public class PlantDetailActivity extends BaseActivity {
     @Override
     protected void initData() {
 
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null){
-            plantName = bundle.getString(Constant.PLANT_NAME);
-        }
-
         if (netUtil.isNetworkAvailable(this)){
             loadingDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
                     .setTitleText("Loading");
@@ -176,6 +205,7 @@ public class PlantDetailActivity extends BaseActivity {
             for (int i = 0; i < PlantData.plantModelList.size(); i++) {
                 if (PlantData.plantModelList.get(i).getPlantChineseName().equals(plantName)){
                     Glide.with(this).load(PlantData.plantModelList.get(i).getPlantImageURL()).into(plantImageView);
+                    Glide.with(this).load(PlantData.plantModelList.get(i).getPlantImageURL()).into(bottomImage);
                     plantCnNameTv.setText(PlantData.plantModelList.get(i).getPlantChineseName());
                     plantEnNameTv.setText(PlantData.plantModelList.get(i).getPlantEnglishName());
                     plantPropertyTv.setText(PlantData.plantModelList.get(i).getPlantProperty());
