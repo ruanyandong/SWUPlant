@@ -5,11 +5,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.TextView;
 import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.base.BaseActivity;
+import com.example.ai.swuplant.customcomponent.CustomViewPager;
 import com.example.ai.swuplant.data.PlantData;
 import com.example.ai.swuplant.entity.PlantModel;
 import com.example.ai.swuplant.entity.PointInfo;
@@ -28,7 +28,7 @@ import java.util.List;
 public class MainActivity extends BaseActivity implements View.OnClickListener{
 
 
-    private ViewPager mViewPager;
+    private CustomViewPager mViewPager;
     private TextView mCampusMap;
     private TextView mFuzzyRetrieval;
     private TextView mFlora;
@@ -139,52 +139,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         mFuzzyRetrieval.setOnClickListener(this);
         mFlora.setOnClickListener(this);
         mFavorite.setOnClickListener(this);
-
-        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                int currentPosition=mViewPager.getCurrentItem();
-                resetTextColor();
-                switch (currentPosition){
-
-                    case 0:
-                        mCampusMap.setTextColor(Color.parseColor("#007aff"));
-                        Drawable drawableMap = getResources().getDrawable(R.drawable.map_blue);
-                        mCampusMap.setCompoundDrawablesWithIntrinsicBounds(null, drawableMap,null,null);
-
-                        break;
-                    case 1:
-                        mFuzzyRetrieval.setTextColor(Color.parseColor("#007aff"));
-                        Drawable drawableRetrieval = getResources().getDrawable(R.drawable.search_blue);
-                        mFuzzyRetrieval.setCompoundDrawablesWithIntrinsicBounds(null, drawableRetrieval,null,null);
-                        break;
-                    case 2:
-                        mFlora.setTextColor(Color.parseColor("#007aff"));
-                        Drawable drawableFlora = getResources().getDrawable(R.drawable.plant_blue);
-                        mFlora.setCompoundDrawablesWithIntrinsicBounds(null,drawableFlora,null,null);
-                        break;
-                    case 3:
-                        mFavorite.setTextColor(Color.parseColor("#007aff"));
-                        Drawable drawableFavorite = getResources().getDrawable(R.drawable.favorites_blue);
-                        mFavorite.setCompoundDrawablesWithIntrinsicBounds(null,drawableFavorite,null,null);
-                        break;
-                    default:
-                        break;
-                }
-
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
     }
 
     @Override

@@ -9,12 +9,12 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <android.support.v4.view.ViewPager
+        <com.example.ai.swuplant.customcomponent.CustomViewPager
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        </android.support.v4.view.ViewPager>
+        </com.example.ai.swuplant.customcomponent.CustomViewPager>
 
         <FrameLayout
             android:id="@+id/fuzzy_retrieval_input_fragment"
