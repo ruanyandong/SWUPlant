@@ -1,7 +1,6 @@
 package com.example.ai.swuplant.base;
 
 import android.app.Application;
-import android.content.res.TypedArray;
 import com.baidu.mapapi.SDKInitializer;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
@@ -19,7 +18,7 @@ public class BaseApplication extends Application {
         //注意该方法要再setContentView方法之前实现
         SDKInitializer.initialize(getApplicationContext());
 
-        init();
+        //init();
 
         initLogger();
     }

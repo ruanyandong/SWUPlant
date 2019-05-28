@@ -6,10 +6,7 @@ import com.example.ai.swuplant.net.bean.CollectionBackResult;
 import com.example.ai.swuplant.net.bean.LoginBackResult;
 import com.example.ai.swuplant.net.bean.RegisterBackResult;
 import com.example.ai.swuplant.net.bean.UpdatePasswordBackResult;
-
 import java.util.List;
-import java.util.Map;
-
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;

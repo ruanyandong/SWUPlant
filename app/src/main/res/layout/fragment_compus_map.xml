@@ -7,7 +7,7 @@
 
     <com.baidu.mapapi.map.MapView
         android:id="@+id/bmapView"
-        android:layout_width="fill_parent"
+        android:layout_width="fill_parent" android:focusable="true" 
         android:layout_height="match_parent"
         android:clickable="true" />
 
@@ -21,15 +21,15 @@
             android:layout_height="40dp"
             android:paddingLeft="8dp"
             android:layout_centerInParent="true"
-            android:background="@color/colorGreen"
+            android:layout_marginEnd="10dp" android:layout_marginStart="60dp" android:background="@color/colorGreen"
             android:drawableLeft="@drawable/search"
-            android:hint="@string/search_hint"
+            android:drawableStart="@drawable/search" android:hint="@string/search_hint"
             android:drawablePadding="3dp"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="60dp"
             android:layout_marginRight="10dp"
             android:maxLines="1"
-            android:textSize="15dp" />
+            android:paddingStart="8dp" android:textSize="15dp" />
 
         <TextView
             android:id="@+id/search_text"
@@ -38,8 +38,8 @@
             android:layout_alignParentRight="true"
             android:text="搜索"
             android:clickable="true"
-            android:gravity="center"
-            android:background="@drawable/search_text_view_style"
+            android:focusable="true" android:gravity="center"
+            android:layout_alignParentEnd="true" android:background="@drawable/search_text_view_style"
             android:layout_marginLeft="15dp"
             android:textSize="18sp"
             android:paddingRight="10dp"

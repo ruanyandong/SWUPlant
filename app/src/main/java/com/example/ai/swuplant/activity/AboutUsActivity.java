@@ -33,4 +33,5 @@ public class AboutUsActivity extends BaseActivity {
     protected int getLayoutId() {
         return R.layout.activity_about_us;
     }
+
 }

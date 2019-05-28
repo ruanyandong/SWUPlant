@@ -23,7 +23,7 @@
         android:id="@+id/my_favorite_image"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:scaleType="centerCrop"
+        android:contentDescription="TODO" android:scaleType="centerCrop"
         android:layout_margin="5dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toRightOf="@id/checkbox"

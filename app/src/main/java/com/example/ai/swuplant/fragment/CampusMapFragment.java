@@ -9,6 +9,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,21 +37,25 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.utils.DistanceUtil;
 import com.example.ai.swuplant.R;
 import com.example.ai.swuplant.activity.PlantDetailActivity;
 import com.example.ai.swuplant.activity.PointInfoActivity;
+import com.example.ai.swuplant.adapter.PlantListAdapter;
 import com.example.ai.swuplant.base.BaseFragment;
 import com.example.ai.swuplant.customcomponent.ClearEditText;
 import com.example.ai.swuplant.data.PlantData;
+import com.example.ai.swuplant.entity.PlantModel;
 import com.example.ai.swuplant.entity.PointInfo;
 import com.example.ai.swuplant.utils.Constant;
 import com.example.ai.swuplant.utils.IntentUtils;
 import com.example.ai.swuplant.utils.MyOrientationListener;
 import com.example.ai.swuplant.utils.ToastUtils;
 import com.example.customdialog.SweetAlertDialog;
-
+import com.orhanobut.logger.Logger;
 import java.util.ArrayList;
 import java.util.List;
+
 public class CampusMapFragment extends BaseFragment {
 
     private View view=null;
@@ -58,7 +66,7 @@ public class CampusMapFragment extends BaseFragment {
     private BaiduMap baiduMap = null;
     private LocationClient locationClient = null;
 
-    private boolean isResume=true;
+    private boolean isResume=false;
     private boolean isFirstLocation = true;
     private MyLocationListener myLocationListener;
     /**
@@ -101,7 +109,6 @@ public class CampusMapFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initSDKClient();
-
     }
 
     private void initSDKClient(){
@@ -109,7 +116,7 @@ public class CampusMapFragment extends BaseFragment {
         locationClient=new LocationClient(getActivity().getApplicationContext());
         myLocationListener=new MyLocationListener();
         //注册监听器
-
+        locationClient.registerLocationListener(myLocationListener);
     }
 
     @Nullable
@@ -121,33 +128,30 @@ public class CampusMapFragment extends BaseFragment {
         view=inflater.inflate(R.layout.fragment_compus_map, container, false);
         initView(view);
 
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         initEvent();
-    }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        checkPermission();
         checkGPS();
-        mMapView.onResume();
-
-        if (mapStatus != null){
-            mapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mapStatus);
-            baiduMap.setMapStatus(mapStatusUpdate);
-        }
-
-        locationClient.registerLocationListener(myLocationListener);
+        checkPermission();
         addOverlays(PlantData.plantInfoList);
         setOnMarkerListener();
         setOnMapClickListener();
 
+        return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        isResume = true;
+        mMapView.onResume();
+        if (mapStatus != null){
+            mapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mapStatus);
+            baiduMap.setMapStatus(mapStatusUpdate);
+        }
 
     }
 
@@ -209,6 +213,8 @@ public class CampusMapFragment extends BaseFragment {
         baiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
+
+                ToastUtils.showToast(getActivity(),"点击Marker");
 
                 Bundle bundle=marker.getExtraInfo();
                 PointInfo infoBean=(PointInfo) bundle.getSerializable(Constant.PLANT_NAME);
@@ -313,20 +319,10 @@ public class CampusMapFragment extends BaseFragment {
         mIconLocation= BitmapDescriptorFactory.fromResource(R.drawable.arrow);
 
         myOrientationListener=new MyOrientationListener(getActivity());
-
         /**
-         * 当方向改变时，转动定位图标
+         * 当方向改变时，转动定位图标,更新方向值
          */
-        myOrientationListener.setOrientationListener(
-                new MyOrientationListener.onOrientationListener() {
-                    @Override
-                    public void onOrientationChanged(float x) {
-                        /**
-                         * 更新方向值
-                         */
-                        mCurrentX=x;
-                    }
-                });
+        myOrientationListener.setOrientationListener(x->mCurrentX=x);
 
     }
 
@@ -396,15 +392,19 @@ public class CampusMapFragment extends BaseFragment {
 
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
 
-    }
 
     @Override
     public void onStop() {
         super.onStop();
+        isResume = false;
+    }
+
+    @Override
+    public void onDestroy() {
+
+        super.onDestroy();
+        locationClient.unRegisterLocationListener(myLocationListener);
         /**
          * 停止定位
          */
@@ -417,13 +417,8 @@ public class CampusMapFragment extends BaseFragment {
  * 停止方向传感器
  */
         myOrientationListener.stop();
-    }
-
-    @Override
-    public void onDestroy() {
-
-        super.onDestroy();
         mMapView.onDestroy();
+
 
     }
 
@@ -432,8 +427,8 @@ public class CampusMapFragment extends BaseFragment {
         super.onPause();
         mapStatus = baiduMap.getMapStatus();
         mMapView.onPause();
-        locationClient.unRegisterLocationListener(myLocationListener);
-        isResume = true;
+        //locationClient.unRegisterLocationListener(myLocationListener);
+        isResume = false;
 
     }
 
@@ -499,22 +494,20 @@ public class CampusMapFragment extends BaseFragment {
         MyLocationData data=builder.build();
 
         baiduMap.setMyLocationData(data);
-
         //设置自定义图标
         MyLocationConfiguration configuration=new
                 MyLocationConfiguration(mLocationMode,true,mIconLocation);
-
         baiduMap.setMyLocationConfiguration(configuration);
-
         /**
          * 记录最新的位置，更新经纬度
          */
-        mLatitude=bdLocation.getLatitude();
-        mLongitude=bdLocation.getLongitude();
+        if (mLatitude != bdLocation.getLatitude() || mLongitude != bdLocation.getLongitude()){
+            mLatitude=bdLocation.getLatitude();
+            mLongitude=bdLocation.getLongitude();
+        }
 
         if (isResume) {
             LatLng latLng = new LatLng(bdLocation.getLatitude(), bdLocation.getLongitude());
-
             MapStatusUpdate mapStatusUpdate ;
             if (isFirstLocation){
                 mapStatusUpdate= MapStatusUpdateFactory.newLatLngZoom(latLng, 16f);
@@ -522,19 +515,81 @@ public class CampusMapFragment extends BaseFragment {
             }else {
                 mapStatusUpdate = MapStatusUpdateFactory.newLatLng(latLng);
             }
-
             baiduMap.animateMapStatus(mapStatusUpdate);
-
             /*判断baiduMap是已经移动到指定位置*/
             if (baiduMap.getLocationData() != null) {
                 if (baiduMap.getLocationData().latitude == bdLocation.getLatitude()
                         && baiduMap.getLocationData().longitude == bdLocation.getLongitude()) {
                     isResume = false;
+                    double latitude = bdLocation.getLatitude();// 纬度
+                    double longtitude = bdLocation.getLongitude();// 经度
+                    Logger.d("纬度："+latitude+"\t经度："+longtitude);
+
+                    PointInfo pointInfo = aroundPlantInformation(PlantData.plantInfoList,latitude,longtitude);
+                    List<PlantModel> dataSource = null;
+                    if (pointInfo != null){
+                        dataSource = obtainAroundPlant(pointInfo,PlantData.plantModelList);
+                    }
+                    View view = LayoutInflater.from(getActivity()).inflate(R.layout.plant_point_info_dialog_layout,null);
+                    if (dataSource != null && view!= null){
+                        showPlantInformation(view,dataSource);
+                    }
                 }
             }
         }
 
     }
 
+    private PointInfo aroundPlantInformation(List<PointInfo> list,double la,double lo){
+        PointInfo pointInfo = null;
+        double differenceValue = Double.MAX_VALUE;
+
+        for (PointInfo info:list) {
+            double latitude = info.getLatitude();
+            double longtitude = info.getLongitude();
+            double value = DistanceUtil.getDistance(new LatLng(la,lo),new LatLng(latitude,longtitude));
+            if (value<differenceValue){
+                differenceValue = value;
+                pointInfo = info;
+            }
+        }
+        return pointInfo;
+    }
+
+    private List<PlantModel> obtainAroundPlant(PointInfo pointInfo,List<PlantModel> list){
+        List<PlantModel> result = new ArrayList<>();
+        List<String> plants = pointInfo.getPlantNameList();
+        for (String name : plants) {
+            for (PlantModel m : list) {
+                if (name.equals(m.getPlantChineseName())){
+                    result.add(m);
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+
+    private void showPlantInformation(View view,List<PlantModel> list){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(view);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        RecyclerView recyclerView = view.findViewById(R.id.dialog_recyclerView);
+        TextView textView = view.findViewById(R.id.cancel_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL));
+        PlantListAdapter plantListAdapter = new PlantListAdapter(getActivity(),list);
+        recyclerView.setAdapter(plantListAdapter);
+        plantListAdapter.setOnItemClickListener(name->{
+            Bundle bundle = new Bundle();
+            bundle.putString(Constant.PLANT_NAME,name);
+            IntentUtils.showActivity(getActivity(), PlantDetailActivity.class,bundle);
+            dialog.dismiss();
+        });
+        textView.setOnClickListener(v->dialog.dismiss());
+    }
 
 }

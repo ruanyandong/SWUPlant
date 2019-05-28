@@ -14,10 +14,10 @@
         android:paddingLeft="8dp"
         android:background="#9DDE76"
         android:drawableLeft="@drawable/search"
-        android:hint="@string/search_hint"
+        android:drawableStart="@drawable/search" android:hint="@string/search_hint"
         android:drawablePadding="3dp"
         android:maxLines="1"
-        android:textSize="15dp" />
+        android:paddingStart="8dp" android:textSize="15dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -44,7 +44,7 @@
             android:id="@+id/sideBar"
             android:layout_width="30dp"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" android:layout_alignParentRight="true"
             />
     </RelativeLayout>
 
